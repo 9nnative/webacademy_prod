@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="fr" target-language="fr" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="J5mpa3T" resname="Version du site">
+        <source>Version du site</source>
+        <target>Site version</target>
+      </trans-unit>
+      <trans-unit id="UzFhc1Y" resname="Accueil">
+        <source>Accueil</source>
+        <target>Home</target>
+      </trans-unit>
+      <trans-unit id="PbZfjCp" resname="Navigation">
+        <source>Navigation</source>
+        <target>Navigation</target>
+      </trans-unit>
+      <trans-unit id="dlTuyM9" resname="E-Learning">
+        <source>E-Learning</source>
+        <target>E-Learning</target>
+      </trans-unit>
+      <trans-unit id="j3M9RRx" resname="Gestion de projets">
+        <source>Gestion de projets</source>
+        <target>Project management</target>
+      </trans-unit>
+      <trans-unit id="B8xpUns" resname="Communauté">
+        <source>Communauté</source>
+        <target>Community</target>
+      </trans-unit>
+      <trans-unit id="eIARgzp" resname="Notifications">
+        <source>Notifications</source>
+        <target>Notifications</target>
+      </trans-unit>
+      <trans-unit id="AZI996R" resname="Paramètres">
+        <source>Paramètres</source>
+        <target>Settings</target>
+      </trans-unit>
+      <trans-unit id="IGgVtgB" resname="Gestion du profil">
+        <source>Gestion du profil</source>
+        <target>Profile management</target>
+      </trans-unit>
+      <trans-unit id="TGXq.NA" resname="Paramètres du compte">
+        <source>Paramètres du compte</source>
+        <target>Account settings</target>
+      </trans-unit>
+      <trans-unit id="qMD7oaF" resname="Bienvenue !">
+        <source>Bienvenue !</source>
+        <target>Welcome !</target>
+      </trans-unit>
+      <trans-unit id="I9TQ9DA" resname="Bienvenue sur Web Academy">
+        <source>Bienvenue sur Web Academy</source>
+        <target>Welcome to Web Academy</target>
+      </trans-unit>
+      <trans-unit id="yU0oJoM" resname="Choisissez un univers">
+        <source>Choisissez un univers</source>
+        <target>Choose a universe</target>
+      </trans-unit>
+      <trans-unit id="LPjBfmR" resname="Univers E-Learning">
+        <source>Univers E-Learning</source>
+        <target>E-Learning Universe</target>
+      </trans-unit>
+      <trans-unit id="JF0f2lq" resname="Cours en libre accès">
+        <source>Cours en libre accès</source>
+        <target>Free courses</target>
+      </trans-unit>
+      <trans-unit id="dwtspI4" resname="Formations diplômantes">
+        <source>Formations diplômantes</source>
+        <target>Diploma courses</target>
+      </trans-unit>
+      <trans-unit id="HjcOwX9" resname="Espace créateur">
+        <source>Espace créateur</source>
+        <target>Creator space</target>
+      </trans-unit>
+      <trans-unit id="PMqmRF4" resname="Mes cours sauvegardés">
+        <source>Mes cours sauvegardés</source>
+        <target>My saved courses</target>
+      </trans-unit>
+      <trans-unit id="q6UeuFb" resname="Mes cours publiés">
+        <source>Mes cours publiés</source>
+        <target>My published courses</target>
+      </trans-unit>
+      <trans-unit id="8qU8dT9" resname="Créer un cours">
+        <source>Créer un cours</source>
+        <target>Create a course</target>
+      </trans-unit>
+      <trans-unit id="ePGeaAN" resname="Créer un groupe d'utilisateurs">
+        <source>Créer un groupe d'utilisateurs</source>
+        <target>Create a user group</target>
+      </trans-unit>
+      <trans-unit id="iYQkfj9" resname="Rechercher...">
+        <source>Rechercher...</source>
+        <target>Search...</target>
+      </trans-unit>
+      <trans-unit id="XiuOllA" resname="Sign up">
+        <source>Inscription</source>
+        <target>Sign up</target>
+      </trans-unit>
+      <trans-unit id="6QTU.k_" resname="Log-in">
+        <source>Connexion</source>
+        <target>Log-in</target>
+      </trans-unit>
+      <trans-unit id="6SsPmQh" resname="Connecté">
+        <source>Connecté</source>
+        <target>Logged in</target>
+      </trans-unit>
+      <trans-unit id="sYru0ag" resname="Se déconnecter">
+        <source>Se déconnecter</source>
+        <target>Log out</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

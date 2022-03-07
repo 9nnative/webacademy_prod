@@ -1,0 +1,125 @@
+<h1>{{course.title}}</h1>
+
+{% for categories in course.categories %}
+<div class="ui basic label">{{categories.name}}</div>
+{% endfor %}
+
+<div class="ui accordion">
+  <div class="title">
+    <i class="dropdown icon"></i>
+   <i class="info circle icon"></i>Informations
+  </div>
+    <div class="content">
+    <div class="ui two column stackable grid">
+    <div class="column">
+        <img class="ui image" src="/uploads/coursesimages/{{course.brochureFileName}}">
+    </div>
+    <div class="column">
+        <p><b>Prérequis</b></p>
+        <p>{{course.prerequis}}</p>
+        <div class="ui divider"></div>
+        <p><b>Objectifs pédagogiques</b></p>
+        <p>{{course.objectifspedago}}</p>
+        <div class="ui divider"></div>
+        <p>Date de début du cours : {{course.datestart|format_datetime(locale='fr')}}</p>
+        <p>Date de fin du cours : {{course.dateend|format_datetime(locale='fr')}}</p>
+        <div class="ui divier"></div>
+        <p><i class="clock outline icon"></i> {{course.duration}}</p>
+    </div>
+    </div>
+      <div class="ui divider"></div>
+      <p><b>Créateur du cours</b></p>
+      <a class="ui basic image label">
+      <img src="/uploads/profilepics/{{course.createdby.brochurefilename}}">
+      {{course.createdby.name}} {{course.createdby.forename}}
+      </a>
+    </div>
+</div>
+
+
+{% if app.user %}
+<div class="ui fluid {% if course.sections|length > 5 %}vertical {% endif %}stackable menu">
+{% for section in course.sections %}
+  <a class="item step {% if naviguation.section.id == section.id %} active {% endif %}" href="/course/{{course.slug}}/navigate/{{section.id}}" >
+    {% if naviguation.section.id == section.id %}<b>{{section.title}}</b>{% else %}
+    {{section.title}}
+    {% endif %}
+  </a>
+{% endfor %}
+</div>
+{% else %}
+<div class="ui fluid {% if course.sections|length > 5 %}vertical {% endif %}stackable menu">
+{% for section in course.sections %}
+  <a class="item step" data-tab="{{section.id}}">
+    {{section.title}}
+  </a>
+{% endfor %}
+</div>
+{% endif %}
+
+{% if app.user %}
+<div class="ui segment">
+  <p>{{naviguation.section.content|raw}}</p>
+  {# <a class="ui primary right labeled icon button right floated">Suivant<i class="right arrow icon"></i></a>
+  <a class="ui basic left labeled icon button right floated">Retour<i class="left arrow icon"></i></a> #}
+</div>
+
+{% if naviguation.section.courseFiles is not empty %}
+<table class="ui celled striped table">
+  <thead>
+    <tr><th colspan="3">
+      Documents
+    </th>
+  </tr></thead>
+  <tbody>
+  {% for file in naviguation.section.courseFiles %}
+  {% if file.isreadable == true %}
+    <tr>
+
+      <td class="collapsing">
+        {% if file.type == "pdf" or file.type == "xpdf"  %}
+        <i class="file pdf outline icon"></i>PDF
+        {% elseif file.type == "jpeg" or file.type == "png" or file.type == "jpg" %} 
+        <i class="file image outline icon"></i>Image
+        {% elseif file.type == "mp4" or file.type == "mov" or file.type == "wmv" %} 
+        <i class="file video outline icon"></i>Vidéo
+        {% elseif file.type == "mp3" or file.type == "flac" or file.type == "wav" %} 
+        <i class="file audio outline icon"></i>Audio
+        {% endif %}
+      </td>
+
+      <td class="selectable">
+        <a target="_blank" href="{{ asset('uploads/coursesfiles/' ~ file.filename) }}">{{file.filename}}</a>
+      </td>
+
+      <td class="right aligned collapsing"><a class="ui green empty circular label"></a></td>
+    </tr>
+  {% endif %}
+  {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+{% else %}
+
+{% for section in course.sections %}
+<div data-tab="{{section.id}}" class="ui tab segment">
+  <p>{{section.content|raw}}</p>
+</div>
+{% endfor %}
+  {# <a class="ui primary right labeled icon button right floated">Suivant<i class="right arrow icon"></i></a>
+  <a class="ui basic left labeled icon button right floated">Retour<i class="left arrow icon"></i></a> #}
+
+{% endif %}
+
+<script> 
+$('#courseProgress').progress();
+
+$('.menu .item')
+  .tab()
+;
+
+$('.ui.accordion')
+  .accordion()
+;
+
+</script>

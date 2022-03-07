@@ -1,0 +1,153 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Espace créateur{% endblock %}
+
+{% block body %}
+
+<div class="ui top attached tabular menu">
+  <a class="item active" data-tab="courses">E-Learning</a>
+  <a class="item disabled" data-content="Disponible prochainement" data-tab="projects">Gestion de projets</a>
+</div>
+{# DEBUT TAB ELEARNING#}
+<div class="ui bottom attached tab segment active" data-tab="courses">
+
+    <h3>Créer un cours</h3>
+    <p>Crééz un cours comportant des <b>sections</b>, des <b>quizz</b> et un <b>suivi utilisateur complet.</b> Vous pourrez y ajouter toutes sortes de médias.</p> 
+    <p><b>Tout est sauvegardé :</b> vous pourrez reprendre la rédaction du cours à n'importe quel moment.</p>
+    <p>Vous pouvez également consulter le <a data-tooltip='Bientôt disponible'>tutoriel de création de cours</a>.</p>
+    <a href="{{ path('newCourse') }}" class="ui primary basic button centered item buttonintro">
+      <i class="pencil alternate icon"></i>{% trans %}Créer un cours{% endtrans %}
+    </a>
+
+<div class="ui divider"></div>
+
+
+<div class="savedcourses">  
+<h3>Mes cours sauvegardés</h3>
+<table class="ui very basic sortable celled table">
+  <thead>
+    <tr><th>Titre</th>
+    <th>Description</th>
+    <th>Date</th>
+    <th>Dernière étape enregistrée</th>
+  </tr></thead>
+  <tbody>
+  {% for course in usersCourses %}
+  {% if course.state == "saved" %}
+    <tr>
+      <td>
+        <h4 class="ui image header">
+          <img class="ui fluid image" src="/uploads/coursesimages/{{course.brochureFileName}}">
+          <div class="content">
+           {{course.title}}
+          </div>
+      </h4></td>
+      <td>
+        {{ (course.description|length > 100 ? course.description|slice(0, 100) ~ '...' : course.description)|raw  }}
+      </td>
+      <td>
+        {{course.createdat|format_datetime(locale='fr',pattern="EEEE dd MMMM YYYY")}}
+      </td>
+      {% if course.step == 2 %}
+      <td class="selectable positive">
+        <a href="{{path("editsections", { 'id': course.id })}}" class="header popup">Sections</a>
+      </td>
+      {% else %}
+      <td class="selectable warning">
+        <a href="{{path("editCourse", { 'slug': course.slug })}}" class="header popup">Informations</a>
+      </td>
+      {% endif %}
+      </td>
+    </tr>
+  {% endif %}
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+
+<div class="ui divider"></div>
+
+<div class="publishedcourses">  
+<h3>Mes cours publiés</h3>
+<table class="ui very basic sortable celled table">
+  <thead>
+    <tr><th>Titre</th>
+    <th>Description</th>
+    <th>Date</th>
+    <th>Nombre de vues</th>
+    <th>Est publié</th>
+  </tr></thead>
+  <tbody>
+  {% for course in usersCourses %}
+  {% if course.state == "published" %}
+    <tr>
+      <td class="selectable" href="/startCourse/{{course.slug}}">
+        <h4 class="ui image header">
+          <img class="ui fluid image" src="/uploads/coursesimages/{{course.brochureFileName}}">
+          <div class="content">
+           {{course.title}}
+          </div>
+      </h4></td>
+      <td>
+        {{ (course.description|length > 100 ? course.description|slice(0, 100) ~ '...' : course.description)|raw  }}
+      </td>
+      <td>
+        {{course.createdat|format_datetime(locale='fr',pattern="EEEE dd MMMM YYYY")}}
+      </td>
+      <td>
+        {{course.views}}
+      </td>
+      <td class="positive">Publié ✅</td>
+      </td>
+    </tr>
+  {% endif %}
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+
+{# FIN TAB ELEARNING #}
+
+</div>
+
+
+
+
+
+<script>
+$('.popup')
+  .popup()
+;
+
+$('table').tablesort()
+
+{% if app.user.tutorial %}
+introJs()
+.setOption("nextLabel", "Suivant")
+.setOption("prevLabel", "Précédent")
+.setOption("doneLabel", "Terminé !")
+.setOptions({
+  buttonClass: 'ui button',
+  showProgress: true,
+  steps: [{
+    intro: "Bienvenue dans l'espace créateur ! 📙"
+  }, 
+ {
+    element: document.querySelector('.savedcourses'),
+    intro: "Ici s'afficheront les cours sauvegardés"
+  },
+  {
+    element: document.querySelector('.publishedcourses'),
+    intro: "Ici s'afficheront les cours publiés"
+  },
+  {
+    element: document.querySelector('.buttonintro'),
+    intro: "Cliquez ici pour créer un cours"
+  }
+]
+}).start();
+{% endif %}
+
+</script>
+
+{% endblock %}

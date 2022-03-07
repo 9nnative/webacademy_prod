@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dites-nous en plus{% endblock %}
+
+{% block body %}
+<h1 class="ui header">{% trans %}Dites-nous en plus sur votre profil{% endtrans %}</h1>
+
+{{ form_start(form) }}
+    {# ... #}
+
+    {{ form_row(form.brochure) }}
+{{ form_end(form) }}
+
+
+{% endblock %}

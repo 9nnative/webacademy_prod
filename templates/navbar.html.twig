@@ -1,0 +1,109 @@
+<div class="ui attached stackable menu borderless PC">
+    <div class="ui container">  
+        <a href="{{ path('landingpage') }}" class="item"><i class="home icon"></i> {% trans %}Accueil{% endtrans %}</a>
+        <div class="ui simple dropdown item">
+        <i class="grid layout icon"></i>
+        {% trans %}Navigation{% endtrans %}
+        <div class="ui menu">
+            <a href="{{ path('elearning') }}" class="item"><i class="book icon"></i>{% trans %}E-Learning{% endtrans %}</a>
+            <a class="disabled item" data-tooltip="Bientôt disponible !"><i class="briefcase icon"></i>{% trans %}Gestion de projets{% endtrans %}</a>
+            <a class="disabled item" data-tooltip="Bientôt disponible !"><i class="comments icon"></i>{% trans %}Communauté{% endtrans %}</a>
+        </div>
+        </div>
+        {% if is_granted('ROLE_ADMIN') %} 
+        <a href="{{ path('adminpanel') }}" class="borderless item">
+            <i class="shield alternate icon"></i>{% trans %}Administration{% endtrans %}
+        </a>
+        {% endif %}
+        {% if is_granted('ROLE_EXPERT') %} 
+        <a href="{{ path('creatordashboard') }}" class="borderless item">
+            <i class="pencil alternate icon"></i>{% trans %}Espace créateur{% endtrans %}
+        </a>
+        {% endif %}
+        {% if app.user and (app.user.notifstate == null or app.user.notifstate == 0) %}
+        <div id="notifications">
+            {% include 'notifications.html.twig' %}
+        </div>
+        {% endif %}
+        <div class="borderless right item">
+        </div>
+        {% if not app.user %}
+        <div class="borderless item">
+            <a href="{{ path('app_register') }}"class="ui primary button">{% trans %}Sign up{% endtrans %}</a>
+        </div>
+        <div class="borderless item">
+            <a href="{{ path('app_login') }}" class="ui button">{% trans %}Log-in{% endtrans %}</a>
+        </div>
+        {% else %}
+        <div class="ui simple dropdown borderless item">
+        <div class="ui green horizontal label">{% trans %}Connecté{% endtrans %}</div>
+
+        {% if app.user.brochurefilename is null %}
+            <img class="ui avatar image" src="/uploads/brochures/matthew-616045b924296.png">
+        {% else %}
+            <img class="ui avatar image" src="/uploads/profilepics/{{app.user.brochurefilename}}">
+        {% endif %}
+
+        {% if app.user.forename is null %}
+            <span>{{app.user.email}}</span>
+        {% else %}
+            <span>{{app.user.forename}}</span>
+        {% endif %}
+
+        <i class="dropdown icon"></i>
+            <div class="ui menu">
+                {% if app.user.tutorial %}
+                <a href="/toggleTutorial" class="item"><i class="toggle on icon"></i>Tutoriels activés</a>
+                {% else %}
+                <a href="/toggleTutorial" class="item"><i class="toggle off icon"></i>Tutoriels désactivés</a>
+                {% endif %}
+                <a href="{{ path('favorites') }}" class="item"><i class="heart outline icon"></i>{% trans %}Mes favoris{% endtrans %} </a>
+                <a href="{{ path('userdetails') }}" class="item"><i class="edit icon"></i>{% trans %}Gestion du profil{% endtrans %} </a>
+                <a href="{{ path('newTicket') }}" class="item"><i class="bug icon"></i>Signaler un bug</a>
+                <a href="{{ path('app_logout') }}"class="item"><i class="logout icon"></i> {% trans %} Se déconnecter {% endtrans %} </a>
+            </div>
+        </div>
+        {% endif %}
+        <div class="borderless item">
+        {% if app.user %}
+            {% if not app.user.darkmode %}
+                <a href="/toggleBlackMode" class="ui vertical animated circular basic button toggledarkmode" data-content="Activer le thème sombre" tabindex="0">
+                    <div class="hidden content"><i class="sun icon"></i></div>
+                    <div class="visible content">
+                        <i class="sun outline icon"></i>
+                    </div>
+                </a>
+            {% elseif app.user.darkmode %}
+                <a href="/toggleBlackMode" class="ui vertical animated circular basic button toggledarkmode" data-content="Désactiver le thème sombre" tabindex="0">
+                    <div class="hidden content"><i class="sun outline icon"></i></div>
+                    <div class="visible content">
+                        <i class="sun icon"></i>
+                    </div>
+                </a>
+            {% endif %}
+        {% endif %}
+        </div>
+        <div class="borderless item">
+        {% for locale in locales %}
+            {% if locale != app.request.locale %}
+                {% if locale == 'en' %}
+                <a data-content="Click to switch language" class="ui vertical animated circular basic button" data-position="bottom center" tabindex="0" href="{{ path('change_locale', {'locale': locale}) }}">
+                    <div class="hidden content marginright"><i class="fr flag"></i></div>
+                    <div class="visible content marginright">
+                        <i class="gb uk flag"></i>
+                    </div>
+                </a>
+                {% elseif locale == 'fr' %}
+                <a data-content="Cliquez pour passer en anglais" class="ui vertical animated circular basic button" data-position="bottom center" tabindex="0" href="{{ path('change_locale', {'locale': locale}) }}">
+                    <div class="hidden content marginright"><i class="gb uk flag"></i></div>
+                    <div class="visible content marginright">
+                        <i class="fr flag"></i>
+                    </div>
+                </a>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+        </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,131 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Édition de l'utilisateur {{user.forename}}{% endblock %}
+
+{% block body %}
+
+<div class="ui raised basic segment">
+
+<div class="ui three column grid">
+  <div class="column">
+    <div class="ui segment">
+
+        <h3 class="ui header">{{user.forename}} {{user.name}}</h3>
+
+        <p>E-mail : {{user.email}}</p>
+
+        {% if user.bio %}
+        <p>Bio : {{user.bio}}</p>
+        {% else %}
+        <p>Aucune bio</p>
+        {% endif %}
+
+        <img class="ui centered small image" src="/uploads/profilepics/{{user.brochurefilename}}">
+
+    </div>
+  </div>
+
+  <div class="column">
+    <div class="ui segment">
+      <h3>Informations</h3>
+        <table class="ui definition table">
+        <tbody>
+            <tr>
+              <td>Activité</td>
+              {% if user.lasttimeseen > time %}
+              <td><div class="ui green label">En ligne</div></td>
+              {% else %}
+              <td><div data-content="Vu pour la dernière fois : {{user.lasttimeseen|format_datetime('full', locale='fr')}}" class="ui grey label">Hors ligne</div></td>
+              {% endif %}
+            </tr>
+            <tr>
+                <td>Date d'inscription</td>
+                <td>{{user.inscriptiondate|format_datetime('full', locale='fr')}}</td>
+            </tr>
+            <tr>
+                <td>CV</td>
+                {% if user.cv %}
+                <td><a target="_blank" href="{{ asset('cv/' ~ user.cv) }}"><i class="ui eye icon"></i>{{user.cv}}</a></td>
+                {% else %}
+                <td>Non ajouté</td>
+                {% endif %}
+            </tr>
+            <tr>
+                <td>Lien LinkedIn</td>
+                {% if user.linkedin %}
+                <td><a target="_blank" href="{{user.linkedin}}"><i class="ui eye icon"></i>{{user.linkedin}}</a></td>
+                {% else %}
+                <td>Non ajouté</td>
+                {% endif %}
+            </tr>
+            <tr>
+                <td>Thème noir</td>
+                <td>{% if user.darkmode %}Activé{% else %}Désactivé{% endif %}</td>
+            </tr>
+            <tr>
+                <td>Nombre de cours créés</td>
+                <td>{{user.courses|length}}</td>
+            </tr>
+            <tr>
+                <td>Nombre de cours favoris</td>
+                <td>{{user.favorites|length}}</td>
+            </tr>
+        </tbody>
+        </table>
+    </div>
+  </div>
+
+  <div class="column">
+    <div class="ui segment">
+
+    <h3>Rôle(s) de l'utilisateur :</h3>
+        <div class="ui list">
+        {% for role in user.roles %}
+            {% if role == "ROLE_USER"%}
+            {% elseif role == "ROLE_SUBBED" %}
+            <div class="item">Abonné</div>
+            {% elseif role == "ROLE_ADMIN" %}
+            <div class="item">Administrateur</div>
+            {% elseif role == "ROLE_SUPER_ADMIN" %}
+            <div class="item">Super administrateur</div>
+            {% elseif role == "ROLE_NOVICE" %}
+            <div class="item">Novice</div>
+            {% elseif role == "ROLE_INTERMEDIATE" %}
+            <div class="item">Intermédiaire</div>
+            {% elseif role == "ROLE_COACH" %}
+            <div class="item">Coach</div>
+            {% elseif role == "ROLE_EXPERT" %}
+            <div class="item">Expert</div>
+            {% endif %}
+        {% endfor %}
+        </div>
+        <div class="ui divider"></div>
+        <div class="ui form">
+        {{form_start(userrightsForm)}}
+          <div class="field">
+          <label>Séléctionnez un ou plusieurs rôles</label>
+              {{form_widget(userrightsForm.roles)}}
+          </div>
+          <div class="field">
+          <button class="ui primary button right floated">
+              <i class="save icon"></i>
+              Sauvegarder
+          </button>
+          <br>
+          </div>
+        {{form_end(userrightsForm)}}
+        </div>
+
+    </div>
+  </div>
+</div>
+
+
+</div>
+
+<script>
+$('.ui.dropdown')
+  .dropdown()
+;
+</script>
+{% endblock %}

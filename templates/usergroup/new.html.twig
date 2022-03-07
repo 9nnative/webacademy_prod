@@ -1,0 +1,34 @@
+<a onclick="addGroup()" class="ui icon basic button addGroup">
+    <i class="plus icon"></i> Créer un groupe
+</a>
+
+
+<div class="ui modal addGroup">
+  <div class="header">Créer un groupe</div>
+  <div class="content">
+    <div class="ui form">
+    {{form_start(newUsergroupForm)}}
+        <div class="field">
+            <label>Nom du groupe</label>
+            {{form_widget(newUsergroupForm.name)}}
+        </div>
+        <div class="field">
+        <label>Séléctionnez des utilisateurs</label>
+        {{form_widget(newUsergroupForm.users)}}
+        </div>
+        <div class="actions">
+          <button name="course[publish]" type="submit" class="ui primary button">Valider</button>
+          <div class="ui cancel button">Annuler</div>
+        </div>
+    {{form_end(newUsergroupForm)}}
+    </div>
+  </div>
+</div>
+
+<script>
+function addGroup(){
+  $('.ui.modal.addGroup')
+    .modal('show')
+  ;
+}
+</script>

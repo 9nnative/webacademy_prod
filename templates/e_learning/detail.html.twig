@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}WebAcademy - {{course.title}}{% endblock %}
+
+{% block body %}
+<div class="ui breadcrumb">
+  <a href="/" class="section">Accueil</a>
+  <i class="right chevron icon divider"></i>
+  <a href="{{ path('elearning') }}" class="section">Tous les cours</a>
+  <i class="right arrow icon divider"></i>
+  <div class="active section">{{course.title}}</div>
+</div>
+
+{% if app.user %}
+<div class="ui four item menu PC">
+  <a href="1"class="item tabLink activeLink" data-tab="details"><i class="expand icon"></i>Détails</a>
+  <a href="2" class="item tabLink {% if course.state == "saved" %}disabled{% endif %}" data-tab="groups"><i class="users icon"></i>Groupes</a>
+  {% if is_granted('ROLE_EXPERT') or is_granted('ROLE_ADMIN')%}
+  <a href="3" class="item tabLink {% if course.state == "saved" %}disabled{% endif %}" data-tab="histo"><i class="history icon"></i>Historique</a>
+  {% endif %}
+  <a href="4"class="item tabLink" data-tab="parameters"><i class="bar chart icon"></i>Données du cours</a>
+</div>
+<div class="ui four item menu Mobile">
+  <a href="1"class="item tabLink activeLink" data-tab="details"><i class="expand icon"></i></a>
+  <a href="2" class="item tabLink {% if course.state == "saved" %}disabled{% endif %}" data-tab="groups"><i class="users icon"></i></a>
+  {% if is_granted('ROLE_EXPERT') or is_granted('ROLE_ADMIN')%}
+  <a href="3" class="item tabLink {% if course.state == "saved" %}disabled{% endif %}" data-tab="histo"><i class="history icon"></i></a>
+  {% endif %}
+  <a href="4"class="item tabLink" data-tab="parameters"><i class="bar chart icon"></i></a>
+</div>
+{% else %}
+<div class="ui two item menu PC">
+  <a href="1"class="item tabLink activeLink" data-tab="details"><i class="expand icon"></i>Détails</a>
+  <a href="4"class="item tabLink" data-tab="parameters"><i class="bar chart icon"></i>Données du cours</a>
+</div>
+<div class="ui two item menu Mobile">
+  <a href="1"class="item tabLink activeLink" data-tab="details"><i class="expand icon"></i></a>
+  <a href="4"class="item tabLink" data-tab="parameters"><i class="bar chart icon"></i></a>
+</div>
+{% endif %}
+
+{% if app.user %}
+  {% for inviteToGroups in app.user.inviteToGroups %}
+    {% if inviteToGroups.course == course %}
+      {% if inviteToGroups.status == 0 %}
+      <div class="ui tiny modal">
+        <div class="header">Rejoindre le groupe de travail {{inviteToGroups.wgroup.name}} ?</div>
+        <div class="content">
+          <p>Vous suiverez ce cours : {{course.title}}</p>
+        </div>
+        <div class="actions">
+          <a href="{{ path('acceptinvite', { 'id': inviteToGroups.id }) }}}"class="ui green approve ok button">Rejoindre le groupe</a>
+          <div class="ui red cancel button">Annuler</div>
+        </div>
+      </div>
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+{% for message in groupprompts %}
+<div class="ui yellow message">
+{% if is_granted('ROLE_EXPERT') or is_granted('ROLE_ADMIN')%}<i onclick="window.location.href='/deletePromptMessage/{{message.id}}'" class="close icon"></i>{% endif %}
+  <div class="header">
+    Message de groupe <small>({{message.wgroup.name}})</small>
+  </div>
+  <p>{{message.content}}</p>
+  {% if message.brochureFilename %}
+  <a target="_blank" href="{{ asset('uploads/' ~ message.brochureFilename) }}">Voir le document <i class="file alternate outline icon"></i></a>
+  {% endif %}
+</div>
+{% endfor %}
+
+<div class="ui bottom attached tab tabcontent begin details" data-tab="details">
+  {# {% if app.user and naviguation.course == course %} #}
+    {% include 'e_learning/start.html.twig' %}
+  {# {% endif %} #}
+</div>
+
+{% if app.user %}
+<div class="ui bottom attached tab tabcontent" data-tab="groups">
+{% include 'e_learning/groups.html.twig' %}
+{% include 'usergroup/new.html.twig' %}
+</div>
+{% endif %}
+
+{% if app.user %}
+<div class="ui bottom attached tab tabcontent" data-tab="histo">
+{% include 'e_learning/histo.html.twig' %}
+</div>
+{% endif %}
+
+<div class="ui bottom attached tab tabcontent" data-tab="parameters">
+  {% include 'e_learning/parameters.html.twig' %}
+</div>
+
+<script src="{{ asset('js/adress.js') }}"></script>
+<script src="{{ asset('js/detail.js') }}"></script>
+{% endblock %}

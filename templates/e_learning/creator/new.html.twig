@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un cours{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.css" integrity="sha256-e47xOkXs1JXFbjjpoRr1/LhVcqSzRmGmPqsrUQeVs+g=" crossorigin="anonymous" />
+<script src="{{ asset('js/newCourse.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+<div class="ui three top attached ordered steps tabular">
+  <div onclick="window.location.href='/course/edit/{{course.id}}'" class="active step infosStep">
+    <div class="content">
+      <a href="/course/edit/{{course.id}}" class="title">Informations générales</a>
+      <div class="description">Renseignez les informations de base du cours</div>
+    </div>
+  </div>
+  <div data-tab="sections" class="disabled step optionsStep goToOptions">
+    <div class="content">
+      <a href="" class="title goToOptions">Options</a>
+      <div class="description">Sélectionnez les options de votre cours</div>
+    </div>
+  </div>
+  <div data-tab="options" class="disabled step sectionsStep">
+    <div class="content">
+      <div class="title">Sections</div>
+      <div class="description">Crééz vos sections et assignez-y des questionnaires</div>
+    </div>
+  </div>
+</div>
+
+{# DEBUT INFOS #}
+<div class="ui attached segment infos" data-tab="infos"> 
+  {% include "e_learning/creator/infos.html.twig" %}
+</div>
+{# FIN INFOS #}
+
+{# DEBUT OPTIONS #}
+<div class="ui tab options dnone" data-tab="options">
+  {% include "e_learning/creator/options.html.twig" %}
+</div>
+{# FIN OPTIONS #}
+
+<script>
+function tutoriel1(){
+introJs()
+.setOption("nextLabel", "Suivant")
+.setOption("prevLabel", "Précédent")
+.setOption("doneLabel", "Compris !")
+.setOptions({
+  buttonClass: 'ui button',
+  showProgress: true,
+  steps: [{
+    intro: "Tutoriel pt1 : Voici quelques petites informations pour la création de votre cours 📄"
+  }, 
+ {
+    element: document.querySelector('.steps'),
+    intro: "Voici les étapes de création du cours"
+  },{
+      element: document.querySelector('.infosStep'),
+    intro: "L'étape actuelle : le renseignement des informations de base du cours"
+  },{
+      element: document.querySelector('.optionsStep'),
+    intro: "L'étape suivante : paramètrage du cours"
+  },{
+      element: document.querySelector('.sectionsStep'),
+    intro: "Et enfin, l'étape de création de contenu à l'aide de sections"
+  },{
+    element: document.querySelector('.ui .form'),
+    intro: "Remplissez les informations de base du cours ..."
+  },
+  {
+    element: document.querySelector('.goToOptions'),
+    intro: "... puis cliquez ici pour passer à l'étape suivante ! On se retrouve à l'étape 'Sections !'"
+  }
+]
+}).start();
+  }
+
+</script>
+
+{% endblock %}

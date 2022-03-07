@@ -1,0 +1,49 @@
+<div class="ui stackable three column grid stackable cards">
+{% for course in pagination %}
+{% if course.state == 'published' %}
+  <div class="card">
+    <img class="ui fluid image" src="/uploads/coursesimages/{{course.brochureFileName}}">
+
+    <div class="content">
+
+    <span><h3><a href="/startCourse/{{course.slug}}">{{course.title}}</a></h3></span>
+
+    <div data-tooltip="Catégories" class="marginbot margintop">
+    {% for categories in course.categories %}
+        <div class="ui tiny basic label">{{categories.name}}</div>
+    {% endfor %}
+    </div>
+
+    <div class="description" data-tooltip="Description">
+    
+    {% autoescape %}
+    {{ (course.description|length > 150 ? course.description|slice(0, 150) ~ '...' : course.description)|raw  }}
+    {% endautoescape %}       
+    </div>
+    </div>
+    <div class="extra content">
+      <a data-tooltip='Ce cours a été consulté {{course.views}} fois' class="ui label right floated"><i class="eye icon"></i> {{course.views}}</a>
+      <div class="ui label">
+      {% if app.user %}
+            {% if course in app.user.favorites %}
+            <div onclick="window.location.href='/addCourseToFavorites/{{course.slug}}'" data-tooltip="Cliquez pour supprimer ce cours de vos favoris"  class="ui heart rating favorite" data-rating="1" data-max-rating="1"></div>
+            {% else %}
+            <div onclick="window.location.href='/addCourseToFavorites/{{course.slug}}'" data-tooltip="Cliquez pour ajouter aux favoris"  class="ui heart rating favorite" data-rating="0" data-max-rating="1"></div>
+            {% endif %}
+            {% else %}
+            <div onclick="window.location.href='/addCourseToFavorites/{{course.slug}}'" data-tooltip="Cliquez pour ajouter aux favoris"  class="ui heart rating favorite" data-rating="0" data-max-rating="1"></div>
+      {% endif %}
+      </div>
+      {% if course.iscertifying == 1 %}
+      <a class="ui bottom basic orange label"><i class="certificate icon"></i>Cours certifiant</a>
+      {% endif %}
+      {% if course.ispaying == 1 %}
+      <a class="ui bottom basic orange icon label"><i class="lock icon"></i>Abonnement requis</a>
+      {% else %}
+      <a class="ui bottom basic green label"><i class="gem icon"></i>Libre accès</a>
+      {% endif %}  
+    </div>
+  </div>
+{% endif %}
+{% endfor %}
+</div>

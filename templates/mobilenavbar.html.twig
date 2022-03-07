@@ -1,0 +1,49 @@
+<div class="ui menu Mobile mobilemenu sticky">
+
+    <div onclick="popSideBar()" class="item">
+        <i class="sidebar icon"></i>
+        Menu
+    </div>
+    
+</div>
+
+<div class="ui sidebar vertical menu Mobile">
+
+    {% if not app.user %}
+    <div class=" item">
+        <a href="{{ path('app_register') }}"class="ui primary button">{% trans %}Sign up{% endtrans %}</a>
+        <a href="{{ path('app_login') }}" class="ui button">{% trans %}Log-in{% endtrans %}</a>
+    </div>
+    {% endif %}
+        <a href="/elearning" class="item">E-Learning</a>
+    {% if app.user %}
+
+        {% if is_granted('ROLE_ADMIN') %} 
+        <a href="{{ path('adminpanel') }}" class="borderless item">
+            <i class="shield alternate icon"></i>{% trans %}Administration{% endtrans %}
+        </a>
+        {% endif %}
+        {% if is_granted('ROLE_COACH') %} 
+        <a href="{{ path('creatordashboard') }}" class="borderless item">
+            <i class="pencil alternate icon"></i>{% trans %}Espace créateur{% endtrans %}
+        </a>
+        {% endif %}
+        <br>
+
+        <div class="item header">Mon profil
+        {% if app.user.brochurefilename %}
+        <img class="ui left floated mini rounded image" src="/uploads/profilepics/{{app.user.brochurefilename}}">
+        {% endif %}
+        </div>
+        <a href="/favorites" class="item">Favoris</a>
+        <a href="/userdetails"class="item">Éditer mon profil</a>
+        <a href="/logout" class="item">Se déconnecter</a>
+
+        </div>
+    {% endif %}
+
+</div>
+
+<script>
+
+</script>

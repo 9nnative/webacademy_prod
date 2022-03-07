@@ -1,0 +1,184 @@
+  <h1 class="ui header">Créer un cours</h1>
+    <div class="ui form courseform">
+    <div class="ui message">
+    <i class="close icon"></i>
+      <div class="header">
+        Tutoriel 💡 - Étape 1/2
+      </div>
+      <p><a onclick="tutoriel1()">Cliquez ici</a> pour suivre le tutoriel de création de cours</p>
+    </div>
+    {{form_start(courseForm)}}
+    <div class="field">
+        <label>Titre du cours *</label>
+        {{form_widget(courseForm.title)}}
+        <div id="title-characters-left"></div>
+    </div>
+    <div class="field">
+    <label>Ajoutez une description brève du cours *</label>
+        {{form_widget(courseForm.description)}}
+        <div id="description-characters-left"></div>
+    </div>
+    
+    <div class="two fields">
+      <div class="field">
+          <label>Objectifs pédagogiques *</label>
+          {{form_widget(courseForm.objectifs_pedago)}}
+      </div>
+      <div class="field">
+          <label>Prérequis *</label>
+          {{form_widget(courseForm.prerequis)}}
+      </div>
+    </div>
+
+    <div class="two fields">
+      <div class="field">
+          <label>Ajoutez une image descriptive du cours</label>
+          <div class="ui input">
+              {{ form_widget(courseForm.brochure) }}
+          </div>
+      </div>
+      <div class="field">
+          <a href="/createCategory" target="_blank">(Créer une catégorie ?)</a>
+          <label>Choisissez une ou plusieurs catégories * </label>
+          {{form_widget(courseForm.categories)}}
+      </div>
+    </div>
+
+    <p>* : champ obligatoire</p>
+    <a data-content="Besoin d'aide ?" class="ui icon button">
+        <i class="question circle outline icon"></i>
+    </a>
+
+    <a data-content="Passer à l'étape suivante" data-position="top right" class="ui right floated green labeled icon submit button goToOptions">
+        <i class="right arrow icon"></i>
+        Suivant
+    </a>
+</div>
+
+<script>
+$('.courseform')
+  .form({
+    inline : true,
+    on: 'blur',
+    fields: {
+      title: {
+        identifier  : 'title',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : 'Veuillez renseigner un titre'
+          },
+          {
+            type   : 'maxLength[100]',
+            prompt : 'Le titre ne doit pas dépasser {ruleValue} caractères'
+          }
+        ]
+      },
+      objectifs_pedago: {
+        identifier  : 'objectifs_pedago',
+        rules: [
+          {
+            type   : 'maxLength[255]',
+            prompt : 'Les objectifs pédagogiques ne doivent pas dépasser {ruleValue} caractères'
+          }
+        ]
+      },
+            prerequis: {
+        identifier  : 'prerequis',
+        rules: [
+          {
+            type   : 'maxLength[255]',
+            prompt : 'Les prérequis ne doivent pas dépasser {ruleValue} caractères'
+          }
+        ]
+      },
+      categories: {
+        identifier: 'categories',
+        rules: [
+          {
+            type   : 'minCount[1]',
+            prompt : 'Veuillez sélectionner au moins une catégorie'
+          }
+        ]
+      },
+      description: {
+        identifier  : 'description',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : 'Veuillez renseigner une description'
+          },
+          {
+            type   : 'maxLength[1000]',
+            prompt : 'La description ne doit pas dépasser {ruleValue} caractères'
+          }
+        ]
+      },
+      name: {
+        identifier  : 'name',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : 'Veuillez renseigner un nom de catégorie'
+          },
+          {
+            type   : 'maxLength[16]',
+            prompt : 'Le nom ne doit pas dépasser {ruleValue} caractères'
+          }
+        ]
+      },
+    },
+
+  onSuccess: function(event, fields) {
+  console.log("Le formulaire a été validé - (step infos)")
+  $.tab('change tab', 'options');
+  $('.options').removeClass('dnone')
+  $('.infos').addClass('dnone')
+  $('.sections').addClass('dnone')
+  $('.infosStep').removeClass('active').addClass('completed')
+  $('.optionsStep').removeClass('disabled').addClass('active')
+  $('.options').removeClass('dnone')     
+  }
+})
+
+function Test(){
+var startDate = new Date($('#rangestart').val());
+var endDate = new Date($('#date_end').val());
+
+console.log(startDate)
+
+if (startDate < endDate){
+
+}
+}
+
+var textarea = document.getElementById('description');
+
+window.onload = textareaLengthCheck();
+
+function textareaLengthCheck() {
+    var textArea = textarea.value.length;
+    var charactersLeft = 1000 - textArea;
+    var count = document.getElementById('description-characters-left');
+    count.innerHTML = "<small class='right floated'>Caractères restants : "+ charactersLeft +"</small>"
+}
+
+textarea.addEventListener('keyup', textareaLengthCheck, false);
+textarea.addEventListener('keydown', textareaLengthCheck, false);
+
+
+var textareatitle = document.getElementById('title');
+
+window.onload = textareaLengthCheckTitle();
+
+function textareaLengthCheckTitle() {
+    var textArea = textareatitle.value.length;
+    var charactersLeft = 100 - textArea;
+    var count = document.getElementById('title-characters-left');
+    count.innerHTML = "<small class='right aligned'>Caractères restants : "+ charactersLeft +"</small>"
+}
+
+textareatitle.addEventListener('keyup', textareaLengthCheckTitle, false);
+textareatitle.addEventListener('keydown', textareaLengthCheckTitle, false);
+
+</script>

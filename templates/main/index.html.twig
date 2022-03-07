@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Web Academy{% endblock %}
+
+{% block body %}
+
+<div id="background" class="PC"></div>
+
+<div class="ui container">
+  <h1 class="landingTitle">{% trans %}Bienvenue sur Web Academy !{% endtrans %}</h1>
+  <h3 class="landingSubheader subheader"><small>{% trans %}Crééz, innovez, apprenez</small>{% endtrans %}</h3>
+</div>
+
+<div class="ui link centered cards landingCards">
+  <div class="ui raised card elearning" onclick="window.location ='/elearning'">
+    <div class="content">
+      <div class="header">E-Learning</div>
+      <div class="meta"><a class="ui green empty circular label"></a> En ligne</div>
+      <div class="description">
+        <p>Découvrez une plateforme unique pour tous vos besoins en e-learning. Accompagnement continu. LMS innovant & sécurisé. </p>
+      </div>
+    </div>
+      <div class="extra centred content">
+        <a class="ui fluid basic button violet right labeled icon">
+        <i class="arrow right icon"></i>
+        C'est parti !
+        </a>
+      </div>
+  </div>
+  <div class="ui raised card projectmanagement">
+    <div class="content">
+      <div class="header">Gestion de projets</div>
+      <div class="meta"><a class="ui orange empty circular label"></a> Bientôt disponible</div>
+      <div class="description">
+        <p>Application des techniques de gestion de projets afin d'atteindre des objectifs précis.</p>
+      </div>
+    </div>
+      <div class="extra centred content">
+        <a class="ui fluid basic violet disabled button right labeled icon">
+        <i class="arrow right icon"></i>
+        C'est parti !
+        </a>
+      </div>
+  </div>
+  <div class="ui raised card">
+    <div class="content">
+      <div class="header">Communauté</div>
+      <div class="meta"><a class="ui orange empty circular label"></a> Bientôt disponible</div>
+      <div class="description">
+        <p>Réseau social basé autour de l'innovation</p>
+      </div>
+    </div>
+      <div class="extra centred content">
+        <a class="ui fluid basic button  violet disabled right labeled icon">
+        <i class="arrow right icon"></i>
+        C'est parti ! 
+        </a>
+      </div>
+  </div>
+</div>
+
+{# <div class="ui raised very padded text container segment">
+  <h2 class="ui header">Présentation de l'application</h2>
+  <img class="ui small left floated image" src="/svg/1files.svg">
+    <p><b>Aenean blandit posuere turpis.</b> Donec volutpat condimentum libero vitae condimentum. Etiam ac mattis elit. Praesent congue sapien quis pellentesque tempor. Suspendisse accumsan erat sed ante fringilla, in laoreet tortor cursus. Donec id arcu arcu. Ut sit amet enim id nunc rutrum placerat. Cras maximus felis congue, efficitur justo quis, facilisis nunc</p>
+  <img class="ui small right floated image" src="/svg/2keypoints.svg">
+    <p>Aliquam erat volutpat. Praesent vitae dui ac urna semper hendrerit. <b>Quisque aliquam est ut dui dictum</b>, eleifend eleifend tellus tincidunt. Aenean ipsum dolor, laoreet non convallis in, pulvinar a lectus. Suspendisse convallis non orci nec facilisis. Sed dignissim nisl nulla, eu hendrerit quam elementum viverra. Fusce ultricies dolor eget urna facilisis bibendum. Nulla maximus pharetra odio, <b>quis bibendum nibh vehicula</b> sit amet. Morbi tempor magna non libero lacinia, a condimentum tellus imperdiet. Praesent eu libero sit amet diam consequat auctor. Phasellus rhoncus elit nec ipsum feugiat condimentum. Phasellus ullamcorper est ac orci porttitor, ut scelerisque lectus convallis. Nunc volutpat dapibus faucibus. Pellentesque in quam tristique, condimentum arcu ut, ultrices dolor. Nunc varius mi elit, eu feugiat ante semper ac. Etiam in purus interdum, dignissim augue venenatis, bibendum dui.</p>
+</div> #}
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.cells.min.js"></script>
+<script>
+VANTA.CELLS({
+  el: "#background",
+  mouseControls: true,
+  touchControls: true,
+  gyroControls: false,
+  minHeight: 250.00,
+  minWidth: 200.00,
+  scale: 1.00,
+  color1: 0x8c008c,
+  color2: 0x7c46ff,
+  speed: 0.50
+})
+</script>
+{% endblock %}

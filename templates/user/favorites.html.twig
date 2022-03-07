@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes favoris{% endblock %}
+
+{% block body %}
+<div class="ui breadcrumb">
+  <a href="/" class="section">Accueil</a>
+  <i class="right angle icon divider"></i>
+  <div class="active section">Mes favoris</div>
+</div>
+
+<div class="ui segment">
+<h1 class="header">Mes cours favoris</h1>
+    <div class="ui divided animated list">
+    {% for course in favorites %}
+        <div class="item">
+            <a href="{{path("course_details", { 'slug': course.slug })}}" class="header">{{course.title}}</a>
+            <div class="description">
+            {{ (course.description|length > 150 ? course.description|slice(0, 150) ~ '...' : course.description)|raw  }}
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+{% endblock %}

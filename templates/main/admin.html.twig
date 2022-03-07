@@ -1,0 +1,309 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Web Academy{% endblock %}
+
+{% block body %}
+
+<div class="ui top attached tabular menu">
+  <a class="item activeLink tabLink" data-tab="first">Recherches et informations générales</a>
+  <a class="item tabLink" data-tab="second">Demandes d'accès ({{allAccess|length}})</a>
+  <a class="item tabLink" data-tab="third">Statistiques</a>
+  <a class="item tabLink" data-tab="fourth">Actions <div class="ui label">Beta</div></a>
+  <a class="item tabLink" data-tab="fifth">Tickets ({{allTickets|length}}) <div class="ui label">Beta</div></a>
+</div>
+
+<div class="ui bottom attached tab segment active tabcontent" data-tab="first">
+    <h3>Utilisateurs  ({{ pagination.getTotalItemCount }}) :</h3>
+    <div class="ui search">
+        <div class="ui icon input">
+            <input class="prompt" type="text" placeholder="Rechercher un utilisateur ...">
+            <i class="search icon"></i>
+        </div>
+        <div class="results"></div>
+    </div>
+    <div class="ui compact segment">
+    {{ knp_pagination_sortable(pagination, 'Prénom', 'forename') }}
+    {{ knp_pagination_sortable(pagination, 'Nom', 'name') }}
+    {{ knp_pagination_sortable(pagination, 'Email', 'email') }}
+    {{ knp_pagination_sortable(pagination, 'Est en ligne', 'lasttimeseen') }}
+    </div>
+    <div class="ui middle aligned divided list">
+    {% for user in pagination %}
+      <div class="item">
+      {% if user.lasttimeseen > time %}
+      <div class="ui green horizontal label">En ligne</div>
+      {% else %}
+      <div data-content="Vu pour la dernière fois : {{user.lasttimeseen|format_datetime('full', locale='fr')}}" class="ui grey horizontal label">Hors ligne</div>
+      {% endif %}
+        <div class="right floated content">
+          <a href="/admineditprofile/{{user.id}}" class="ui icon button"><i class="wrench icon"></i>
+          </a>
+        </div>
+        <p data-content="Thème noir activé" class="right floated content margintop">{% if user.darkmode %}<i class="sun icon"></i>{% endif %}</p>
+        <img class="ui avatar image" src="/uploads/profilepics/{{user.brochurefilename}}">
+        <div class="content">
+          {{user.forename}} {{user.name}} <i>{{user.email}}</i> 
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="ui centered">
+      {{ knp_pagination_render(pagination) }}
+    </div>
+</div>
+
+<div class="ui bottom attached tab segment tabcontent" data-tab="second">
+
+{% if allAccess is empty %}
+<p>Aucune demande d'accès n'a été effectuée pour le moment</p>
+{% else %}
+<table class="ui sortable very basic celled table">
+  <thead>
+    <tr><th>Utilisateur</th>
+    <th>Date</th>
+    <th>Profil LinkedIn</th>
+    <th>CV</th>
+    <th>Actions</th>
+  </tr></thead>
+  <tbody>
+  {% for access in allAccess %}
+    <tr>
+      <td>
+        <h4 class="ui image header">
+          <img src="/uploads/profilepics/{{access.user.brochurefilename}}" class="ui mini rounded image">
+          <div class="content">
+            {{access.user.forename}} {{access.user.name}} 
+            <div class="sub header"><i>{{access.user.email}}</i> 
+          </div>
+        </div>
+      </h4></td>
+      <td>
+        {{access.date|format_datetime(locale='fr',pattern="EEEE dd MMMM YYYY à HH:mm")}}
+      </td>
+      <td class="selectable">
+         <a target="_blank" href="{{access.user.linkedin}}">Voir le profil <i class="ui linkedin icon"></i></a>
+      </td>
+      <td class="selectable">
+        <a target="_blank" href="{{ asset('cv/' ~ access.user.cv) }}">Voir le CV <i class="ui file pdf icon"></i></a>
+      </td>
+      <td>
+        <a href="/acceptRequest/{{access.id}}" class="ui green basic small button">Accepter</a>
+        <a class="ui red small button">Refuser</a>  
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+</div>
+
+<div class="ui bottom attached tab segment tabcontent" data-tab="third">
+
+    {% set count = 0 %}
+        
+    {% for user in allusers %}
+      {% if user.lasttimeseen > time %}
+        {% set count = count + 1 %}
+    
+      {% endif %}
+      
+    {% endfor %}
+
+  <h2>Statistiques :</h2>
+
+    <div class="ui statistic">
+    <div class="value">
+        {{allusers|length}}
+    </div>
+    <div class="label">
+        {% trans %}Comptes créés{% endtrans %}
+    </div>
+    </div>
+
+    <div class="ui statistic">
+    <div class="value">
+        {{count}} 
+    </div>
+    <div class="label">
+        {% trans %}Utilisateurs en ligne{% endtrans %}
+    </div>
+    </div>
+
+</div>
+
+<div class="ui bottom attached tab segment tabcontent" data-tab="fourth">
+
+  <h3 class="header">
+    Envoyer une notification <div class="ui label">Beta</div>
+  </h3>
+
+  {{form_start(notifform)}}
+  <div class="ui form">
+    <div class="field"><label>Séléctionner les utilisateurs</label>{{form_widget(notifform.users)}}</div>
+      <div class="two fields">
+        <div class="field"><label>Type</label>{{form_widget(notifform.type)}}</div>
+        <div class="field"><label>Titre</label>{{form_widget(notifform.header)}}</div>
+      </div>
+    <div class="field"><label>Contenu</label>{{form_widget(notifform.content)}}</div>
+
+    <div class="right floated actions">
+    <div class="ui black deny button">
+      Annuler
+    </div>
+    <button type="submit" class="ui positive right labeled icon button">
+      Envoyer
+      <i class="send icon"></i>
+    </button>
+    </div>
+    {{form_end(notifform)}}
+  </div>
+</div>
+
+<div class="ui bottom attached tab segment tabcontent" data-tab="fifth">
+
+<h3>Outil de ticketing <div class="ui label">Beta</div></h3>
+
+<h4>Tous les tickets</h4>
+  <table class="ui sortable celled table">
+    <thead>
+      <tr><th>Titre</th>
+      <th>Date de création</th>
+      <th class="four wide">Priorité</th>
+      <th class="four wide">Statut</th>
+    </tr></thead>
+    <tbody>
+    
+    {% for ticket in allTickets %}
+    {% if ticket.state != 'done' %}
+    <tr onclick="openModal{{ticket.id}}()"{% if ticket.state == null %}class="warning"{% elseif ticket.state == 'done' %}class="success"{% endif %}>
+      <td class="selectable" data-label="title">&nbsp;&nbsp;{{ticket.title}}</td>
+      <td class="selectable" data-label="date">&nbsp;&nbsp;{{ticket.date|format_datetime('full', locale='fr')}}</td>
+      {% if ticket.priority == null %}
+      <td><i class="attention icon"></i>Priorité à définir</td>
+      {% else %}
+      <td>{{ticket.priority}}</td>
+      {% endif %}
+      {% if ticket.state == null %}
+      <td><i class="attention icon"></i>Nouveau</td>
+      {% elseif ticket.state == 'checked' %}
+      <td><i class="checkmark icon"></i>Pris en charge</td>
+      {% elseif ticket.state == 'done' %}
+      <td class="success"><i class="checkmark icon"></i>Terminé</td>
+      {% endif %}
+    </tr>
+    <div class="ui modal {{ticket.id}}">
+      <div class="header">{{ticket.title}}</div>
+      <div class="content">
+        <p><b>Contenu :</b></p>
+        <p>{{ticket.content}}</p>
+        <p>
+          <div>
+            <div class="content">
+              <p><b>Importance :</b></p>
+              <div class="ui inline dropdown">
+                <div class="text"></div>
+                <i class="dropdown icon"></i>
+                <div class="menu">
+                  <div class="header">Séléctionnez un indice</div>
+                  <div href="/setTicketPriority/{{ticket.id}}/1" class="item" data-text="1/5">1</div>
+                  <div href="/setTicketPriority/{{ticket.id}}/2" class="item" data-text="2/5">2</div>
+                  <div href="/setTicketPriority/{{ticket.id}}/3" class="item" data-text="3/5">3</div>
+                  <div href="/setTicketPriority/{{ticket.id}}/4" class="item" data-text="4/5">4</div>
+                  <div href="/setTicketPriority/{{ticket.id}}/5" class="item" data-text="5/5">5</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </p>
+        <p>Créé par {{ticket.createdby.name}} {{ticket.createdby.forename}} le {{ticket.date|format_datetime('full', locale='fr')}}</p>
+      </div>
+      <div class="actions">
+        <div class="ui black deny button">
+          Annuler
+        </div>
+        {% if ticket.state == null %}
+        <a href="/setTicketChecked/{{ticket.id}}" class="ui positive icon button">
+          Prendre en charge
+        </a>
+        {% else %}
+        <a class="ui positive right labeled icon button">
+          Définir comme terminé
+          <i class="checkmark icon"></i>
+        </a>
+        {% endif %}
+      </div>
+    </div>
+    <script>
+    function openModal{{ticket.id}}(){
+      $('.ui.modal.{{ticket.id}}')
+        .modal('show')
+      ;
+    }
+    </script>
+    {% endif %}
+    {% endfor %}
+  </tbody>
+</table>
+
+<div class="ui accordion tickets">
+  <div class="title">
+    <i class="dropdown icon"></i>
+    Tickets terminés
+  </div>
+  <div class="content">
+    <p>Vue à finir</p>
+  </div>
+</div>
+
+
+</div>
+
+
+<script src="{{ asset('js/adress.js') }}"></script>
+<script src="{{ asset('js/detail.js') }}"></script>
+<script>
+$('table').tablesort();
+
+$('.ui.accordion.tickets')
+  .accordion()
+;
+
+function openModalNotif(){
+  $('.ui.modal')
+  .modal('show')
+;
+}
+
+$('.menu .item')
+  .tab()
+;
+
+
+$('.label')
+  .popup()
+;
+
+var
+  content = [
+    {% for user in allusers %}
+    {
+      title: '{{user.name}} {{user.forename}}',
+      description: '{{user.email}}',
+      url: '/admineditprofile/{{user.id}}',
+      image: "/uploads/profilepics/{{user.brochurefilename}}",
+    },
+    {% endfor %}
+  ]
+;
+$('.ui.search')
+  .search({
+    source : content,
+    searchFields   : [
+      'title',
+      'description'
+    ],
+    fullTextSearch: true
+  })
+;
+</script>
+{% endblock %}

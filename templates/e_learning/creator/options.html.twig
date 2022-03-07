@@ -1,0 +1,106 @@
+<div class="ui attached segment options form"> 
+
+    <div class="field">
+      <label>Durée du cours</label>
+        <div class="ui calendar" id="duration">
+        {{form_widget(courseForm.duration)}}
+        </div>
+    </div>
+
+    <div class="field">
+        <div class ="ui toggle checkbox dates">
+            <label>Activer date de début et de fin du cours</label>
+            {{form_widget(courseForm.date_end_bool)}}
+        </div>
+    </div>
+
+  <div class="two {% if courseForm.vars.value.dateendbool == false %}disabled{% endif %} fields" id="dates">
+    <div class="field">
+      <label>Date de début du cours</label>
+        <div class="ui calendar" id="rangestart">
+        {{form_widget(courseForm.date_start_str)}}
+        <small>Cliquez ci-dessus pour voir le calendrier</small>
+        </div>
+    </div>
+    <div class="field">
+      <label>Date de fin du cours</label>
+        <div class="ui calendar" id="rangeend">
+        {{form_widget(courseForm.date_end_str)}}
+        </div>
+        <small>Cliquez ci-dessus pour voir le calendrier</small>
+    </div>
+  </div>
+
+    <div class="field">
+        <div class ="ui toggle checkbox">
+            <label>Cochez cette case si ce cours sera payant (formation diplômante)</label>
+            {{form_widget(courseForm.is_paying)}}
+        </div>
+    </div>
+
+<a data-content="Besoin d'aide ?" class="ui icon button">
+    <i class="question circle outline icon"></i>
+</a>
+
+{{form_widget(courseForm.suivant)}}
+
+<button type="submit" id="suivant" name="suivant" class="ui right floated labeled green icon button">
+<i class="right arrow icon"></i>
+Suivant
+</button>
+
+<a onclick="returnToInfos()" class="ui button right floated labeled icon">Retour
+    <i class="left arrow icon"></i>
+<a>
+
+<div class="dnone">
+{{form_widget(courseForm.sections)}}
+</div>
+
+
+</div>
+{{form_end(courseForm)}}
+</div>
+
+
+<script>
+$('#rangestart').calendar({
+    text: {
+    days: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+    months: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Decembre'],
+    monthsShort: ['Jan', 'Fev', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Aou', 'Sep', 'Oct', 'Nov', 'Dec'],
+    today: 'Aujourd\'hui',
+    now: 'Maintenant',
+    am: 'Matin',
+    pm: 'Après-midi'
+    },
+  type: 'date',
+  endCalendar: $('#rangeend')
+});
+$('#rangeend').calendar({
+    text: {
+    days: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+    months: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Decembre'],
+    monthsShort: ['Jan', 'Fev', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Aou', 'Sep', 'Oct', 'Nov', 'Dec'],
+    today: 'Aujourd\'hui',
+    now: 'Maintenant',
+    am: 'Matin',
+    pm: 'Après-midi'
+    },
+  type: 'date',
+  startCalendar: $('#rangestart')
+});
+
+$('.ui.checkbox')
+.checkbox()
+;
+
+$('.dates').checkbox({
+    onChecked: function() {
+        $('#dates').removeClass('disabled');
+    },
+    onUnchecked: function() {
+        $('#dates').addClass('disabled');
+    },
+})
+</script>

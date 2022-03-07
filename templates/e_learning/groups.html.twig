@@ -1,0 +1,268 @@
+{% if is_granted('ROLE_EXPERT') or is_granted('ROLE_ADMIN')%}
+
+{% for usergroupForm in formsEditG %}
+<div class="ui modal open{{usergroupForm.vars.value.id}}">
+  <div class="header">Modifier le groupe</div>
+  <div class="content">
+    <div class="ui form">
+    {{form_start(usergroupForm)}}
+        <div class="field">
+            <label>Changer le nom du groupe ?</label>
+            {{form_widget(usergroupForm.name)}}
+        </div>
+        <div class="field">
+        <label>Ajoutez ou supprimez des utilisateurs</label>
+        {{form_widget(usergroupForm.users)}}
+        </div>
+        </div>
+      </div>
+  <div class="actions">
+    <button type="submit" class="ui primary button">Valider</button>
+    <div class="ui cancel button">Annuler</div>
+  </div>    
+  {{form_end(usergroupForm)}}
+</div>
+{% endfor %}
+
+{% set id = 0 %}
+{% for groupPromptForm in viewFormNewMsg %}
+{% set id = id +1 %}
+
+<div class="ui modal openMsg{{groupPromptForm.vars.value.wgroup.id}}">
+  <div class="header">Envoyer un message au groupe</div>
+  <div class="content">
+  <p>Ce message sera visible par tous les membres du groupe</p>
+    <div class="ui form prompt">
+    {{form_start(groupPromptForm)}}
+        <div class="field">
+        <label>Message</label>
+        {{form_widget(groupPromptForm.content, { "id" : groupPromptForm.vars.value.wgroup.id})}}
+        <div id="content-characters-left{{groupPromptForm.vars.value.wgroup.id}}"></div>
+        </div>
+        <div class="field">
+        <label>Ajouter un document ?</label>
+        <small>Formats acceptés : .pdf, .docx, .png, .jpeg Poids max : 8 Mo</small>
+        {{form_widget(groupPromptForm.brochure)}}
+        </div>
+      </div>
+    </div>
+  <div class="actions">
+    <button type="submit" class="ui primary button">Envoyer</button>
+    <div class="ui cancel button">Annuler</div>
+  </div>    
+  {{form_end(groupPromptForm)}}
+</div>
+
+
+<script>
+var textareatitle = document.getElementById("{{groupPromptForm.vars.value.wgroup.id}}");
+
+window.onload = textareaLengthCheckTitle{{groupPromptForm.vars.value.wgroup.id}}();
+
+function textareaLengthCheckTitle{{groupPromptForm.vars.value.wgroup.id}}() {
+    var textArea = textareatitle.value.length;
+    var charactersLeft = 200 - textArea;
+    var count = document.getElementById('content-characters-left{{groupPromptForm.vars.value.wgroup.id}}');
+    count.innerHTML = "<small class='right aligned'>Caractères restants : "+ charactersLeft +"</small>"
+}
+
+textareatitle.addEventListener('keyup', textareaLengthCheckTitle{{groupPromptForm.vars.value.wgroup.id}}, false);
+textareatitle.addEventListener('keydown', textareaLengthCheckTitle{{groupPromptForm.vars.value.wgroup.id}}, false);
+</script>
+{% endfor %}
+
+{% endif %}
+
+{% if course.wgroup is empty %}
+<div class="ui message">
+  <div class="header">
+    Il n'y a rien à afficher ici pour le moment <i class="frown outline icon"></i>
+  </div>
+  <p>Aucun groupe n'a été créé</p>
+</div>
+{% else %}
+
+{% for wgroup in course.wgroup %}
+<div class="ui segment">
+<div class="ui grid">
+<div class="two column row">
+<div class="ten wide column">
+    <table class="ui sortable very basic collapsing celled table">
+      <thead>
+    <tr><th colspan="4">
+      <h3>{{wgroup.name}}</h3>
+    </th>
+  </tr></thead>
+    <thead>
+        <tr><th>Membres du groupe</th>
+        {% if is_granted('ROLE_EXPERT') or is_granted('ROLE_ADMIN')%}
+        <th>État de l'invitation</th>
+        <th>Score total</th>
+        <th>Dernière page visitée</th>
+        {% endif %}
+    </tr></thead>
+    <tbody>
+        {% for users in wgroup.users %}
+        <tr>
+        <td>
+            <h4 class="ui image header">
+            <img src="/uploads/profilepics/{{users.brochurefilename}}" class="ui mini rounded image">
+            <div class="content">
+                {{users.name}} {{users.forename}}
+                <div class="sub header">
+                    {% if users == wgroup.createdby %}
+                    <i title="Créateur du groupe" class="magic icon"></i>
+                    {% endif %}
+                    {% for role in users.roles %}
+                        {% if role == "ROLE_USER"%}
+                        {% elseif role == "ROLE_NOVICE" %}
+                        Novice
+                        {% elseif role == "ROLE_INTERMEDIATE" %}
+                        Intermédiaire
+                        {% elseif role == "ROLE_EXPERT" %}
+                        Expert
+                        {% elseif role == "ROLE_COACH" %}
+                        Coach
+                        {% elseif role == "ROLE_SUBBED" %}
+                        <i title="Membre abonné" class="chess queen icon"></i>
+                        {% elseif role == "ROLE_ADMIN" %}
+                        Administrateur
+                        {% elseif role == "ROLE_SUPER_ADMIN" %}
+                        <i title="Super administrateur" class="shield alternate icon"></i>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </h4></td>
+        {% if is_granted('ROLE_EXPERT') or is_granted('ROLE_ADMIN')%}
+          {% for inviteToGroups in users.inviteToGroups %}
+              {% if inviteToGroups.wgroup == wgroup %}
+                  {% if inviteToGroups.status == 0 %}
+                  <td class="error">
+                  <div class="ui tiny active inline loader indeterminate"></div>
+                      &nbsp;En attente
+                  </td>
+                  {% else %}
+                  <td class="positive">
+                  <i class="checkmark icon"></i>
+                      Acceptée
+                  </td>
+                  {% endif %}
+              {% endif %}
+          {% endfor %}
+        {% endif %}
+        <td>
+            N/a
+        </td>
+        <td>
+        {% if is_granted('ROLE_EXPERT') or is_granted('ROLE_ADMIN')%}
+          {% for navigation in users.coursenaviguations %}
+            {% if course == navigation.course %}
+              {{navigation.section.title}}
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+        </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+</div>
+
+<div class="four wide column">
+<div class="ui secondary vertical menu">
+  <div class="item">
+  <p>Lien d'invitation</p>
+  <div class="ui action input">
+    <input id="copyinput{{wgroup.id}}" readonly="" type="text" value="https://webacademy.hidora.com/course/{{course.slug}}">
+    <button id="copy{{wgroup.id}}" class="ui teal right labeled icon button">
+      <i class="copy icon"></i>
+      Copier
+    </button>
+  </div>
+  </div>
+
+  {% if is_granted('ROLE_EXPERT') or is_granted('ROLE_ADMIN')%}
+  <div class="item">
+    <a onclick="open{{wgroup.id}}()" class="ui icon button">
+    <i class="edit icon"></i> Modifier le groupe
+    </a>
+  </div>
+  <div class="item">
+    <a onclick="openMsg{{wgroup.id}}()" class="ui blue icon button">
+    <i class="envelope outline icon"></i> Nouveau message
+    </a>
+  </div>
+  <div class="item">
+    <a href="{{ path('removegroup', { 'slug': wgroup.slug }) }}" class="ui red icon button">
+    <i class="trash icon"></i> Supprimer
+    </a>
+  </div>
+  {% endif %}
+
+</div>
+</div>
+
+</div>
+</div>
+</div>
+{% endfor %}
+{% endif %}
+
+<script src="{{ asset('js/tablesort.js') }}"></script>
+<script>
+
+$('table').tablesort()
+
+{% for wgroup in course.wgroup %}
+function open{{wgroup.id}}(){
+  $('.ui.modal.open{{wgroup.id}}')
+    .modal('show')
+  ;
+}
+function openMsg{{wgroup.id}}(){
+  $('.ui.modal.openMsg{{wgroup.id}}')
+    .modal('show')
+  ;
+}
+
+function copy{{wgroup.id}}() {
+  var copyText = document.querySelector("#copyinput{{wgroup.id}}");
+  copyText.select();
+  document.execCommand("copy");
+
+}
+
+document.querySelector("#copy{{wgroup.id}}").addEventListener("click", copy{{wgroup.id}});
+{% endfor %}
+
+$('.ui .form')
+  .form({
+    inline : true,
+    on: 'blur',
+    fields: {
+      title: {
+        identifier  : 'group_prompt_content',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : 'Veuillez renseigner votre message'
+          },
+          {
+            type   : 'maxLength[200]',
+            prompt : 'Le titre ne doit pas dépasser {ruleValue} caractères'
+          }
+        ]
+      },
+      categories: {
+        identifier: 'categories',
+        rules: [
+          {
+            type   : 'minCount[1]',
+            prompt : 'Veuillez sélectionner au moins une catégorie'
+          }
+        ]
+      },
+    },
+})
+</script>

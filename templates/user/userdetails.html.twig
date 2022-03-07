@@ -1,0 +1,292 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion du profil{% endblock %}
+
+{% block body %}
+<div class="ui four column stackable grid">
+  <div class="column">
+  </div>
+  <div class="column">
+{# DEBUT CARD #}
+      <div class="ui centered card">
+        <div class="image">
+          <img src="/uploads/profilepics/{{app.user.brochurefilename}}">
+        </div>
+        <div class="content">
+          <a class="header">{{app.user.name}} {{app.user.forename}}</a>
+          <div class="meta">
+          {% for role in app.user.roles %}
+          {% if role == "ROLE_USER"%}
+          {% elseif role == "ROLE_NOVICE" %}
+          Novice
+          {% elseif role == "ROLE_INTERMEDIATE" %}
+          Intermédiaire
+          {% elseif role == "ROLE_EXPERT" %}
+          Expert
+          {% elseif role == "ROLE_COACH" %}
+          Coach
+          {% elseif role == "ROLE_SUBBED" %}
+          <i title="Membre abonné" class="chess queen icon"></i>
+          {% elseif role == "ROLE_ADMIN" %}
+          Administrateur
+          {% elseif role == "ROLE_SUPER_ADMIN" %}
+          <i title="Super administrateur" class="shield alternate icon"></i>
+          {% endif %}
+          {% endfor %}
+          </div>
+          <div class="description">
+              {{app.user.bio}} 
+          </div>
+          <div class="extra content">
+            <span class="right floated">
+              Inscrit depuis le {{app.user.inscriptiondate|format_datetime('short', 'none', locale='en')}}
+            </span>
+            {# <span>
+              <i class="user icon"></i>
+              0 Followers
+            </span> #}
+          </div>
+        </div>
+      </div>
+    </div>
+{# FIN CARD #}
+  <div class="column">
+
+    <div class="ui fluid vertical menu">
+      {% if app.user.cv %} 
+      <div class="ui item accordion">
+      <i class="ui file pdf outline icon margintop"></i>
+        <div class="title">
+          <i class="dropdown icon"></i>
+          Mon CV
+        </div>
+        <div class="content">
+          <a class="item" target="_blank" href="{{ asset('cv/' ~ app.user.cv) }}"><i class="ui eye icon"></i>{{app.user.cv}}</a>
+          <a onclick="editCV()" class="item"><i class="ui upload icon"></i>Remplacer mon CV</a>
+        </div>
+      </div>
+      {% else %}
+      <a onclick="editCV()" class="item"><i class="plus icon"></i> Ajouter un CV</a>
+      {% endif %}
+      {% if app.user.linkedin %}
+      <div class="ui item accordion">
+      <i class="ui linkedin icon margintop"></i>
+        <div class="title">
+          <i class="dropdown icon"></i>
+          Mon profil LinkedIn
+        </div>
+        <div class="content">
+          <a data-tooltip="{{app.user.linkedin}}" class="item" target="_blank" href="{{app.user.linkedin}}"><i class="ui eye icon"></i>Voir mon profil</a>
+          <a onclick="editCV()" class="item"><i class="ui upload icon"></i>Remplacer le lien</a>
+        </div>
+      </div>
+      {% else %}
+      <a onclick="editLinkedIn()" class="item"><i class="linkedin icon"></i> Ajouter mon profil LinkedIn </a>
+      {% endif %}
+      {% if app.user.darkmode %}
+      <a href="/toggleBlackMode" class="item"><i class="toggle on icon"></i> Thème sombre activé</a>
+      {% else %}
+      <a href="/toggleBlackMode" class="item"><i class="toggle off icon"></i> Thème sombre désactivé</a>
+      {% endif %}
+      {% if app.user.tutorial %}
+      <a href="/toggleTutorial" class="item"><i class="toggle on icon"></i> Tutoriels activés</a>
+      {% else %}
+      <a href="/toggleTutorial" class="item"><i class="toggle off icon"></i> Tutoriels désactivés</a>
+      {% endif %}
+      {% if (app.user.notifstate == 0 or app.user.notifstate == null) %}
+      <a href="{{ path('toggle_notifications') }}" class="item"><i class="bell outline icon"></i>Notifications activées</a>
+      {% else %}
+      <a href="{{ path('toggle_notifications') }}" class="item"><i class="bell slash outline icon"></i>Notifications désactivées</a>
+      {% endif %}
+      <a onclick="editUser()" class="item"><i class="pencil icon"></i>Modifier mon profil</a>
+      <a onclick="deleteUser()" class="item"><i class="trash icon"></i>Supprimer mon compte</a>
+    </div>
+    {% if app.user.accesses is empty %}
+    <a onclick="needAccess()" class="ui purple basic button">Demander à être créateur de contenu</a>
+    {% else %}
+    <div class="ui segment">
+      <p>Demande d'accès envoyée ✅ </p>
+      {% for access in app.user.accesses %}
+      <p>Le {{access.date|format_datetime('short', 'none', locale='en')}} </p>
+      <small class="ui right aligned">Une réponse vous sera apportée dans les meilleurs délais</small>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="column">
+  </div>
+
+</div>
+
+
+<div class="ui modal editUser">
+  <div class="header">Modifier mon profil</div>
+  <div class="content">
+      <div class="ui form">
+    {{ form_start(userForm) }}
+        <div class="two fields">
+            <div class="field">
+            <label>Nom</label>
+            <div class="ui left icon input">
+                {{ form_widget(userForm.name) }}
+                <i class="user icon"></i>
+            </div>
+            </div>
+            <div class="field">
+            <label>Prénom</label>
+            <div class="ui left icon input">
+                {{ form_widget(userForm.forename) }}
+                <i class="user icon"></i>
+            </div>
+            </div>
+        </div>
+        <div class="field">
+          <label>E-mail</label>
+          <div class="ui left icon input">
+            {{ form_widget(userForm.email) }}
+            <i class="mail icon"></i>
+          </div>
+        </div>
+        <div class="field">
+        <label>Mot de passe</label>
+        <div class="ui left icon input">
+            {{ form_widget(userForm.plainPassword) }}
+            <i class="lock icon"></i>
+        </div>
+        </div>
+        <div class="field">
+        <label>Choisissez une nouvelle photo de profil</label>
+          <div class="ui input">
+              {{ form_widget(userForm.profilepic) }}
+          </div>
+        </div>
+        <div class="field">
+        <label>Code de test (si nécéssaire)</label>
+          <div class="ui input">
+            {{ form_widget(userForm.cheatcode) }}
+          </div>
+        <div>
+        </div>
+        </div>
+        <div class="actions marginbot">
+          <button type="submit" class="ui primary button">Valider</button>
+          <div class="right floated ui cancel button">Annuler</div>
+        </div>
+        {{ form_end(userForm) }}
+  </div>
+</div>
+
+<div class="ui modal editCV">
+  <div class="header">Ajouter/modifier un CV</div>
+  <div class="content">
+      <div class="ui form">
+    {{ form_start(cvForm) }}
+        <div class="field">
+        <label>CV</label>
+        <div class="ui left icon input">
+            {{ form_widget(cvForm.cv) }}
+            <i class="pdf file icon"></i>
+        </div>
+        </div>
+        </div>
+  </div>
+
+  <div class="actions">
+    <button type="submit" class="ui primary button">Valider</button>
+    <div class="ui cancel button">Annuler</div>
+  </div>
+  {{ form_end(cvForm) }}
+
+  </div>
+</div>
+
+<div class="ui modal needAccess">
+  <div class="header">Devenir créateur de contenu</div>
+  <div class="content">
+  <p>Vous avez la possibilité de devenir un créateur de contenu à condition d'avoir ajouté un CV ainsi qu'un lien vers votre LinkedIn.</p>
+  <p>Effectuez seulement cette demande <b>si vous êtes professeur dans le domaine, ou spécialiste</b>. Les administrateurs vérifieront votre profil.</p>
+  </div>
+
+  <div class="actions">
+    <a href="/askForAccess" class="ui primary button">J'envoie ma demande</a>
+    <div class="ui cancel button">Annuler</div>
+  </div>
+
+  </div>
+</div>
+
+<div class="ui modal editLinkedIn">
+  <div class="header">Ajouter/modifier un CV</div>
+  <div class="content">
+      <div class="ui form">
+    {{ form_start(linkedinForm) }}
+        <div class="field">
+        <label>Lien vers mon profil LinkedIn</label>
+        <div class="ui left icon input">
+            {{ form_widget(linkedinForm.linkedin) }}
+            <i class="linkedin icon"></i>
+        </div>
+        </div>
+        </div>
+  </div>
+        <div class="actions">
+          <button type="submit" class="ui primary button">Valider</button>
+          <div class="ui cancel button">Annuler</div>
+        </div>
+        {{ form_end(linkedinForm) }}
+        </div>
+  </div>
+</div>
+
+
+<div class="ui tiny modal deleteUser">
+  <div class="header">Voulez-vous vraiment supprimer votre compte ?</div>
+    <div class="content">
+      <p>Tous les items que vous avez créé seront définitivements supprimés.</p>
+      <h4>⚠ Cette action est irréversible ⚠</h4>
+    </div>
+    <div class="actions">
+        <a href="{{ path('removeUser') }}" class="ui orange button">Je supprime mon compte</a>
+        <div class="ui cancel button">Annuler</div>
+    </div>
+    </div>
+</div>
+
+<script>
+$('.ui.dropdown')
+  .dropdown()
+;
+function editUser(){
+  $('.ui.modal.editUser')
+    .modal('show')
+  ;
+}
+function editLinkedIn(){
+    $('.ui.modal.editLinkedIn')
+    .modal('show')
+  ;
+}
+$('.ui.accordion')
+  .accordion()
+;
+
+function editCV(){
+  $('.ui.modal.editCV')
+    .modal('show')
+  ;
+}
+
+function needAccess(){
+  $('.ui.modal.needAccess')
+    .modal('show')
+  ;
+}
+
+function deleteUser(){
+  $('.ui.tiny.modal.deleteUser')
+    .modal('show')
+  ;
+}
+</script>
+{% endblock %}

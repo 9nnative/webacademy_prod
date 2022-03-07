@@ -1,0 +1,128 @@
+<script>
+window.onload = updateNotifs();
+
+var Interval = setInterval(updateNotifs, 3000);
+var successCount = 0;
+var old = document.getElementById('response');
+var length = document.getElementById('length');
+
+function updateNotifs() {
+
+var myToast = $('body').toast();
+var existingToasts = myToast.toast('get toasts');
+
+    $.ajax({
+        type: "GET",
+        url: "{{path('update_notifications')}}",
+        success: function (result) {
+            while(successCount < result.length){    
+                
+                existingToasts.toast('close');
+
+                for (i = 0; i < result.length; i++) {
+                var obj = result[i];
+                    for (var key in obj){
+                        if(key == 'content'){
+                        var value = obj['content'];
+                        var id = obj['id'];
+                        var type = obj['type'];
+                        var header = obj['header'];
+                        var date = obj['date'];
+                        console.log(type);
+                        console.log(date);
+                        console.log(header);
+                        console.log(value);
+                        if(type == "info"){
+                            $('body')
+                            .toast({
+                                title: header,
+                                displayTime: 0,
+                                message : value,
+                                actions: [
+                                    {
+                                        text: '?',
+                                        class: 'ui blue basic button',
+                                        click: function() {
+                                            $('body')
+                                                .toast({
+                                                    class: 'info',
+                                                    message: `Ce message ne contient pas d'informations supplémentaires`
+                                                })
+                                            return false;
+                                        }
+                                    },
+                                    {
+                                    text: 'Supprimer',
+                                    class: 'ui red basic button',
+                                    click: function() {
+                                            $.ajax({
+                                            type: "GET",
+                                            url: '/removeNotif/'+ id +'',
+                                            success: function (result) {                
+                                                $('body')
+                                                .toast({
+                                                    class: 'success',
+                                                    message: `Notification supprimée`
+                                                })
+                                                ;
+                                            }
+                                        });
+                                    }}
+                                ]
+                            })
+                            ;
+                        successCount++;
+                        }else{
+                        //dans ce cas les types ont toujours le type null - à améliorer
+                        $('body')
+                            .toast({
+                                displayTime: 0,
+                                message: value,
+                                closeIcon: true,
+                                title: header,
+                                showProgress: 'bottom',
+                                    actions:	[{
+                                    text: 'Rejoindre',
+                                    class: 'ui primary button',
+                                    click: function() {
+                                        window.location.href='/acceptInvite/'+ id +'';
+                                    }},
+                                    {
+                                    text: 'Supprimer',
+                                    class: 'ui red basic button',
+                                    click: function() {
+                                            $.ajax({
+                                            type: "GET",
+                                            url: '/removeNotif/'+ id +'',
+                                            success: function (result) {                
+                                                $('body')
+                                                .toast({
+                                                    class: 'success',
+                                                    message: `Notification supprimée`
+                                                })
+                                                ;
+                                            }
+                                        });
+                                    }}
+                                    ]
+                            })
+                            ;
+
+                        successCount++;
+                        }
+                        //fin if
+                        }
+                    }
+                }
+                $(length).replaceWith("<p id='length'>"+ result.length +"</p>");
+            }
+        }
+    });
+} 
+</script>
+{# 
+<div class="ui item">
+    <i class="bell outline icon"></i>
+    <p id ="length result">{{app.user.notifications|length}}</p>
+</div> #}
+

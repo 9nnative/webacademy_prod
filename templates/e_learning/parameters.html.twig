@@ -1,0 +1,123 @@
+{% if is_granted('ROLE_EXPERT') or is_granted('ROLE_ADMIN')%}
+<h4 class="ui horizontal divider header">
+  <i class="lightning icon"></i>
+  Actions
+</h4>
+
+<a href="/course/edit/{{course.slug}}" class="ui basic button"><i class="edit outline icon"></i>Editer le cours</a>
+<a href="/deletecourse/{{course.slug}}" class="ui red basic button"><i class="trash icon"></i>Supprimer le cours</a>
+
+
+
+<h4 class="ui horizontal divider header">
+  <i class="file icon"></i>
+  Fichiers liés au cours
+</h4>
+
+{% for section in course.sections %}
+{% if section.courseFiles is not empty %}
+<table class="ui celled striped table files">
+  <thead>
+    <tr><th colspan="4">
+      Documents - Section : {{section.title}}
+    </th>
+  </tr></thead>
+  <tbody>
+  {% for file in section.courseFiles %}
+  <script>
+    function toggleCheckbox{{file.id}}(){
+    window.location.href = '/toggleFileVisibility/{{file.filename}}';
+  }
+  </script>
+    <tr>
+      <td class="collapsing">
+        {% if file.type == "pdf" or file.type == "xpdf"  %}
+        <i class="file pdf outline icon"></i>PDF
+        {% elseif file.type == "jpeg" or file.type == "png" or file.type == "jpg" %} 
+        <i class="file image outline icon"></i>Image
+        {% elseif file.type == "mp4" or file.type == "mov" or file.type == "wmv" %} 
+        <i class="file video outline icon"></i>Vidéo
+        {% elseif file.type == "mp3" or file.type == "flac" or file.type == "wav" %} 
+        <i class="file audio outline icon"></i>Audio
+        {% endif %}
+      </td>
+      <td class="selectable">
+        <a target="_blank" href="{{ asset('uploads/coursesfiles/' ~ file.filename) }}">{{file.filename}}</a>
+      </td>
+      {% if file.isreadable %}
+      <td class="right aligned collapsing selectable"  onclick="toggleCheckbox{{file.id}}()">
+        <div class="ui read-only checkbox" onclick="toggleCheckbox{{file.id}}()">
+          <input type="checkbox" checked="checked">
+          <label>Activé</label>
+        </div>
+      </td>
+      <td class="right aligned collapsing"><a class="ui green empty circular label"></a></td>
+      {% else %}
+      <td class="right aligned collapsing selectable"  onclick="toggleCheckbox{{file.id}}()">
+        <div class="ui read-only checkbox" onclick="toggleCheckbox{{file.id}}()">
+          <input type="checkbox">
+          <label>Désactivé</label>
+        </div>
+      </td>
+      <td class="right aligned collapsing"><a class="ui red empty circular label"></a></td>
+      {% endif %}
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>Aucun fichier n'a été ajouté à la section <b>{{section.title}}</b></p>
+{% endif %}
+{% endfor %}
+
+{# <ul class="ui list">
+{% for section in course %}
+  {% for file in section.courseFiles %}
+    <li><a target="_blank" href="{{ asset('uploads/coursefiles/' ~ file.filename) }}">Voir le document : {{file.filename}}</a></li>
+  {% endfor %}
+{% endfor %} #}
+
+</ul>
+{% endif %}
+
+<h4 class="ui horizontal divider header">
+  <i class="bar chart icon"></i>
+  Données du cours
+</h4>
+
+<table class="ui definition table">
+  <tbody>
+    <tr>
+        <td>Titre</td>
+        <td>{{course.title}}</td>
+    </tr>
+    <tr>
+        <td>Description</td>
+        <td>{{course.description}}</td>
+    </tr>
+    <tr>
+        <td>Créé le</td>
+        <td>{{course.createdat|format_datetime(locale='fr',pattern="EEEE dd MMMM YYYY")}}</td>
+    </tr>
+    <tr>
+        <td>Certifiant</td>
+        <td>{% if course.iscertifying %}Oui{% else %}Non{% endif %}</td>
+    </tr>
+    <tr>
+        <td>Durée</td>
+        <td>{{course.duration}}</td>
+    </tr>
+    <tr>
+        <td>Nombre de vues</td>
+        <td>{{course.views}}</td>
+    </tr>
+    <tr>
+        <td>Nombre de sections</td>
+        <td>{{course.sections|length}}</td>
+    </tr>
+    <tr>
+        <td>État</td>
+        <td>{% if course.state == "published" %}<a class="ui green empty circular label"></a> Publié {% elseif course.state == "archived" %}<a class="ui orange empty circular label"></a> Archivé{% else %}<a class="ui red empty circular label"></a>  Non publié{% endif %}</td>
+    </tr>
+  </tbody>
+</table>

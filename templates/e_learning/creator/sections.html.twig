@@ -1,0 +1,492 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Création des sections{% endblock %}
+
+{% block body %}
+<script>
+var currentAuthor = '{{app.user.forename}} {{app.user.name}}';
+
+tinymce.init({
+  selector: 'textarea',
+  plugins: 'advcode casechange export formatpainter textcolor linkchecker quickbars autolink lists checklist media mediaembed pageembed permanentpen powerpaste table advtable tinycomments tinymcespellchecker fullscreen autosave image',
+  toolbar: 'restoredraft addcomment showcomments casechange checklist | code export pageembed permanentpen table image media mediaembed | fullscreen autosave',
+  toolbar_mode: 'floating',
+  autosave_interval: '10s',
+  autosave_ask_before_unload: true,
+  language: 'fr_FR',
+    setup: function (ed) {
+      ed.on("change blur", function (e) {
+          content = this.getContent();
+
+          onChangeHandler(ed);
+          array = $('course_section').serializeArray();
+          
+          autoSave();
+
+          console.log(array);
+          console.log(content);
+      })
+  },
+  media_live_embeds: true,
+  media_url_resolver: function (data, resolve/*, reject*/) {
+    if (data.url.indexOf('youtube.com') !== -1) {
+      var embedHtml = '<iframe src="' + data.url +
+      '" width="400" height="400" ></iframe>';
+      resolve({html: embedHtml});
+    } else {
+      resolve({html: ''});
+    }
+  },
+  extended_valid_elements: 'iframe[class|src|frameborder=0|alt|title|width|height|align|name]',
+  tinycomments_mode: 'embedded',
+  tinycomments_author: currentAuthor,
+    image_title: true,
+  /* enable automatic uploads of images represented by blob or data URIs*/
+  automatic_uploads: true,
+  images_upload_url: '/postAcceptor',
+  /*
+    URL of our upload handler (for more details check: https://www.tiny.cloud/docs/configure/file-image-upload/#images_upload_url)
+    images_upload_url: 'postAcceptor.php',
+    here we add custom filepicker only to Image dialog
+  */
+  file_picker_types: 'file image media',
+  /* and here's our custom image picker*/
+  file_picker_callback: function (cb, value, meta) {
+    var input = document.createElement('input');
+    input.setAttribute('type', 'file');
+    input.setAttribute('accept', 'image/*');
+    input.setAttribute('accept', 'media/*');
+
+    /*
+      Note: In modern browsers input[type="file"] is functional without
+      even adding it to the DOM, but that might not be the case in some older
+      or quirky browsers like IE, so you might want to add it to the DOM
+      just in case, and visually hide it. And do not forget do remove it
+      once you do not need it anymore.
+    */
+
+    input.onchange = function () {
+      var file = this.files[0];
+
+      var reader = new FileReader();
+      reader.onload = function () {
+        /*
+          Note: Now we need to register the blob in TinyMCEs image blob
+          registry. In the next release this part hopefully won't be
+          necessary, as we are looking to handle it internally.
+        */
+        var id = 'blobid' + (new Date()).getTime();
+        var blobCache =  tinymce.activeEditor.editorUpload.blobCache;
+        var base64 = reader.result.split(',')[1];
+        var blobInfo = blobCache.create(id, file, base64);
+        blobCache.add(blobInfo);
+
+        /* call the callback and populate the Title field with the file name */
+        cb(blobInfo.blobUri(), { title: file.name });
+      };
+      reader.readAsDataURL(file);
+    };
+
+    input.click();
+  },
+});
+</script>
+
+{# menu de création  #}
+<div class="ui three top attached ordered steps tabular">
+  <div onclick="window.location.href='/course/edit/{{course.id}}'" class="completed step infosStep">
+    <div class="content">
+      <a href="/course/edit/{{course.id}}" class="title">Informations générales</a>
+      <div class="description">Renseignez les informations de base du cours</div>
+    </div>
+  </div>
+  <div data-tab="sections" onclick="goToOptions()" class="completed step optionsStep">
+    <div class="content">
+      <a href="" class="title">Options</a>
+      <div class="description">Sélectionnez les options de votre cours</div>
+    </div> 
+  </div>
+  <div data-tab="options" class="active step sectionsStep">
+    <div class="content">
+      <div class="title">Sections</div>
+      <div class="description">Crééz vos sections et assignez-y des questionnaires</div>
+    </div>
+  </div>
+</div>
+
+{# segment principal #}
+<div class="ui attached segment sections"> 
+
+  <h3 onclick="openModalTitle()" id="fullname" class="ui top centered attached header">
+  {% if course.title %}
+  {{course.title}} 
+  {% else %}
+  Aucun titre ⚠ Cliquez ici pour définir un titre ! ⚠
+  {% endif %}
+    <div class="dnone">
+      <i onclick="openModalTitle()" class="edit outline icon"></i>
+    </div>
+  </h3>
+
+  {% if existingSections is empty %}
+  <div class="ui visible message">
+    <p>Aucune section créée pour le moment</p>
+  </div>
+  {% else %}
+  <div class="ui horizontal divider">
+    Sections créées
+  </div>
+  {% set step = 0 %}
+    <div class="ui fluid styled accordion form">
+    {{form_start(courseSectionForm, {'attr': {'class': 'form_section_edit'}})}}
+      {% for section in courseSectionForm.sections %}
+      {% set step = step + 1 %}
+      {# début titre accordion #}
+      <div class="title {{section.vars.data.id}}">
+        {{step}} • {{ section.title.vars.value }}
+      </div>
+      {# fin titre accordion #}
+      {# début content #}
+      <div class="content {{section.vars.data.id}}">
+        <div class="field">
+        {# titre de la section #}
+        {{form_widget(section.title)}}
+        </div>
+        {# contenu de la section #}
+        <div class="field">
+        {{form_widget(section.content, {'attr': {'class': step}})}}
+        </div>
+        {# fichiers de la section #}
+        <div class="field">
+        {{form_widget(section.courseFiles)}}
+        </div>
+
+        <div class="field">
+        {# bouton toggle visible  #}
+        {% if section.vars.data.ishidden == false or section.vars.data.ishidden == null %}
+        <a class="ui basic labeled icon button"><i class="eye icon"></i>Section visible pour les étudiants</a>
+        {% else %}
+        <a class="ui basic labeled icon orange button"><i class="eye slash icon"></i>Section invisible pour les étudiants</a>
+        {% endif %}
+        {# fin bouton toggle visible #}
+
+        <a onclick="deleteSection({{section.vars.data.id}})" class="ui basic labeled icon red button"><i class="trash icon"></i>Supprimer</a>
+        
+        {# fin divs form #}
+        </div>
+
+      </div>
+      {# fin content #}
+      <script>
+      function SendTitle(){
+        var $form = $('.titleform');
+        $title = $form.find( "input[name='title']" ).val();
+
+          $.ajax({
+            type: 'post',
+            url: '/update_course_title/{{course.id}}',
+            data: { title: $title},
+            dataType: 'json',
+            success: function(msg){ 
+              var publishButton = document.getElementById("publishCourse");
+              var previewButton = document.getElementById("previewCourse");
+              var editButton = document.getElementById("editCourse");
+
+              previewButton.setAttribute("href", "/startCourse/"+msg.updatedSlug);
+
+              publishButton.setAttribute("href", "/publishcourse/"+msg.updatedSlug);
+
+              editButton.setAttribute("href", "/course/edit/"+msg.updatedSlug);
+
+              $('#fullname').text($title);
+              $('body')
+              .toast({
+                class: 'success',
+                message: `Titre mis à jour !`
+              })
+            ;
+            }
+          });
+      }
+    
+      </script>
+
+      {% endfor %}
+      </div>
+      {{form_widget(courseSectionForm.submit)}}
+    {{form_end(courseSectionForm)}}
+
+  {% endif %}
+
+  <div class="ui modal">
+    <i class="close icon"></i>
+    <div class="header">
+      Changer le titre du
+    </div>
+    <div class="content ui form titleform">
+      <div class="field">
+        <label>Ancien titre :</label>
+        <p>{{course.title}}</p>
+      </div>
+      <div class="field">
+      <label>Nouveau titre</label>
+        <input name="title" class="ui input"></input>
+      </div>
+    </div>
+    <div class="actions">
+      <div class="ui black deny button">
+        Annuler
+      </div>
+      <div onclick="SendTitle()" class="ui positive right labeled icon button">
+        Valider
+        <i class="checkmark icon"></i>
+      </div>
+    </div>
+  </div>  
+
+  <p class="timesave"></p>
+
+  <div class="ui accordion">
+  <div class="currentNewSection title ui basic right labeled icon button"><i class="plus icon"></i>Ajouter une nouvelle section</div>
+
+  <div class="content">
+
+  <div class="ui horizontal divider">
+    Section actuelle
+  </div>
+
+  <div class="ui form sectionMain">
+  {{form_start(sectionForm, {'attr': {'id': 'form_section_new'}})}}
+
+    <div class="field" >
+    <label>Titre</label>
+    {{form_widget(sectionForm.title)}}
+    </div>
+
+    <div class="field">
+    <label>Contenu</label>
+    {{form_widget(sectionForm.content)}}
+    </div>
+
+    <div class="medias">
+      <div class="field">
+      <label>Ajouter un ou plusieurs fichiers</label>
+      {{form_widget(sectionForm.courseFiles)}}
+      </div>
+    </div>
+    {{form_widget(sectionForm.submit)}}
+  {{form_end(sectionForm)}}
+  </div>
+
+  </div>
+
+  </div>
+  <br>
+
+  <br>
+
+  <a onclick="beforePublish()" data-content="Besoin d'aide ?" class="ui icon button">
+      <i class="question circle outline icon"></i>
+  </a>
+
+  <a data-content="Réinitialiser le formulaire de la section actuelle"  onclick="removeFields()" class="ui basic icon button">
+    <i class="eraser icon"></i>
+  </a>
+ 
+  <a href="/publishcourse/{{course.slug}}" id="publishCourse" class="ui labeled purple icon button right floated publish">
+  Publier le cours
+  <i class="cloud upload icon"></i> 
+  </a>
+
+  <a href="/startCourse/{{course.slug}}" id="previewCourse" target="_blank" class="ui labeled icon button right floated preview">
+  Prévisualiser le cours
+  <i class="eye alternate icon"></i> 
+  </a>
+
+  <a href="/course/edit/{{course.slug}}" id="editCourse" class="ui button right floated labeled icon">Retour
+      <i class="left arrow icon"></i>
+  </a>
+
+
+  <script>
+  {% if course.autosave == 1 %}
+  {# var Interval = setInterval(autoSave, 10000);
+
+  var Interval2 = setInterval(autoSaveExistingSections, 10000); #}
+  {% endif %}
+
+  </script>
+  </div>
+</div>
+
+<script src="{{ asset('js/sections.js') }}"></script>
+<script>
+
+
+
+function openModalTitle(){
+  $('.ui.modal')
+    .modal('show')
+  ;
+}
+
+{% if course.title == null %}
+  $('body')
+  .toast({
+    class: 'error',
+    message: `Veuillez ajouter un titre à votre cours !`
+  })
+;
+{% endif %}
+function toast(){
+  $('body')
+  .toast({
+    class: 'success',
+    message: `Bientôt disponible !`
+  })
+;
+}
+const addFormToCollection = (e) => {
+  const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
+
+  const item = document.createElement('li');
+
+  item.innerHTML = collectionHolder
+    .dataset
+    .prototype
+    .replace(
+      /__name__/g,
+      collectionHolder.dataset.index
+    );
+
+  collectionHolder.appendChild(item);
+
+  collectionHolder.dataset.index++;
+};
+
+document
+  .querySelectorAll('.add_item_link')
+  .forEach(btn => {
+      btn.addEventListener("click", addFormToCollection)
+  });
+  
+$('.ui.accordion')
+  .accordion()
+;
+
+
+
+function beforePublish(){
+introJs()
+.setOption("nextLabel", "Suivant")
+.setOption("prevLabel", "Précédent")
+.setOption("doneLabel", "Compris !")
+.setOptions({
+  buttonClass: 'ui button',
+  showProgress: true,
+  steps: [{
+    intro: "Avant de publier le cours 📄"
+  }, 
+ {
+    element: document.querySelector('.updates'),
+    intro: "Vérifiez que vous avez mis à jour les modifications que vous avez effectué sur les anciennes sections créées"
+  },{
+      element: document.querySelector('#section_submit'),
+    intro: "Vérifiez également si vous avez bien ajouté votre nouvelle section à vos sections existantes"
+  },{
+      element: document.querySelector('.publish'),
+    intro: "Vous pouvez maintenant publier votre cours ! ✅"
+  }
+]}).start();
+}
+function tutoriel2(){
+introJs()
+.setOption("nextLabel", "Suivant")
+.setOption("prevLabel", "Précédent")
+.setOption("doneLabel", "Compris !")
+.setOptions({
+  buttonClass: 'ui button',
+  showProgress: true,
+  steps: [{
+    intro: "Tutoriel pt2 : Description des sections 📄"
+  }, 
+ {
+    element: document.querySelector('.ui .form .sectionMain'),
+    intro: "Une section est constituée de plusieurs éléments"
+  },{
+      element: document.querySelector('#title'),
+    intro: "Un titre"
+  },{
+      element: document.querySelector('#content'),
+    intro: "Le contenu du chapitre"
+  },{
+      element: document.querySelector('.tutotinymce'),
+    intro: "Voici l'éditeur de texte qui va vous permettre de créer le contenu de vos sections"
+  },
+  {
+      element: document.querySelector('.medias'),
+    intro: "Vous pouvez y ajouter des médias"
+  },{
+    element: document.querySelector('#section_submit'),
+    intro: "Une fois que les informations de la section ont été ajoutées, cliquez ici afin d'ajouter la section à votre cours."
+  },{
+    element: document.querySelector('.preview'),
+    intro: "Vous avez la possibilité de prévisualiser votre cours à tout moment"
+  },{
+    element: document.querySelector('.publish'),
+    intro: "Une fois votre cours rédigé, mettez-le en ligne en cliquant ici"
+  }
+]}).start();
+}
+
+function showPreview(){
+  $('.ui.modal')
+    .modal('show')
+  ;
+}
+
+function onChangeHandler() {
+
+  $('body')
+    .toast({
+      class: 'warning',
+      message: `Contenu modifié`
+    });
+
+  console.log('form changed');
+}
+
+function deleteSection(id){
+$.ajax({
+  url: "/deletesection/"+ id,
+  type: "POST",
+  data: {},
+  success: function (msg) {console.log('OK');
+
+    $("."+id).remove();
+
+    $('body')
+    .toast({
+      class: 'success',
+      message: `Section supprimée`
+    })
+  },
+  });
+}
+
+function autoSave(){
+
+  $.post( "{{path('autosave_sections', {id: course.id} )}}", $('.form_section_edit').serialize())
+    .done(function( data ) {
+      date = data.date;
+      post = data.post;
+      console.log(date);
+      console.log("Retour du serveur :"+post);
+      $( ".timesave" ).empty().append(date);
+      console.log('Savuegarde effectuée');
+    });
+  
+}
+
+</script>
+{% endblock body %}

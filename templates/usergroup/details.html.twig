@@ -1,0 +1,221 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{group.name}}{% endblock %}
+
+{% block body %}
+
+{# <div class="ui three item menu">
+  <a class="item active" data-tab="first"><i class="expand icon"></i>Détails</a>
+  <a class="item" data-tab="second"><i class="history icon"></i>Historique</a>
+  <a class="item" data-tab="third"><i class="cogs icon"></i>Paramètres</a>
+</div>
+
+<div class="ui bottom attached tab active" data-tab="first">
+
+<h1 class="ui centered dividing header">{{group.name}}</h1>
+
+<div class="ui two column grid">
+  <div class="column">
+    <div class="ui segment">
+    <h3 class="ui dividing header">Participants</h3>
+      <div class ="ui list">
+      {% for user in usersingroup %}
+          <div class ="item">
+              <a class="ui basic image label">
+              <img src="/uploads/brochures/{{user.brochurefilename}}">
+              {{user.name}} {{user.forename}}
+              <div class="detail">
+              {% if user == group.createdby %}
+              <i title="Créateur du groupe" class="magic icon"></i>
+              {% endif %}
+              {% for role in user.roles %}
+              {% if role == "ROLE_USER"%}
+              {% elseif role == "ROLE_NOVICE" %}
+              Novice
+              {% elseif role == "ROLE_INTERMEDIATE" %}
+              Intermédiaire
+              {% elseif role == "ROLE_EXPERT" %}
+              Expert
+              {% elseif role == "ROLE_COACH" %}
+              Coach
+              {% elseif role == "ROLE_SUBBED" %}
+              <i title="Membre abonné" class="chess queen icon"></i>
+              {% elseif role == "ROLE_ADMIN" %}
+              Administrateur
+              {% elseif role == "ROLE_SUPER_ADMIN" %}
+              <i title="Super administrateur" class="shield alternate icon"></i>
+              {% endif %}
+              {% endfor %}
+              </div>
+              </a>
+          </div>
+      {% endfor %}
+    </div>
+    <a onclick="editGroup()" class="ui icon button">
+    <i class="plus icon"></i>
+    </a>
+  </div>
+</div>
+
+<div class="column">
+  <div class="ui segment">
+  <h3 class="ui dividing header">Supports</h3>
+  <h4 class="ui header">Liens</h4>
+    <div class="ui list">
+    {% for links in group.links %}
+      <div class="item">
+        <div class="content">
+          <div class="ui small basic icon buttons">
+            <a href="{{links.url}}" target="_blank" class="ui basic button"><i class="linkify icon"></i> {{links.description}}</a>
+            <a href="{{ path('removelink', { 'id': links.id }) }}" class="ui red basic button"><i class="trash icon"></i></a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+    </div>
+  <a onclick="addLink()" class="ui icon button addLink">
+  <i class="plus icon"></i>
+  </a>
+  <h4 class="ui header">Cours</h4>
+      <div class="ui list">
+    {% for course in group.courses %}
+      <div class="item">
+        <div class="content">
+          <div class="ui small basic icon buttons">
+            <a href="/course/{{course.slug}}" target="_blank" class="ui basic button"><i class="linkify icon"></i> {{course.title}}</a>
+            <a href="{{ path('removecoursefromgroup', { 'slug': course.slug, 'group_id': group.id}) }}" class="ui red basic button"><i class="trash icon"></i></a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+    </div>
+  <a onclick="addCourse()" class="ui icon button">
+  <i class="plus icon"></i>
+  </a>
+  </div>
+</div>
+
+</div>
+</div>
+
+<div class="ui bottom attached tab" data-tab="second">
+
+<div class="column">
+  <div class="ui card">
+    <div class="content">
+      <div class="header">Historique du groupe</div>
+    </div>
+    <div class="content">
+      <h4 class="ui sub header">Activité</h4>
+      <div class="ui small feed">
+      {% for event in eventsingroup %}
+        <div class="event">
+          <div class="content">
+            <div class="summary">
+              <a>{{event.actionby.name}} {{event.actionby.forename}}</a> {{event.type}} <small>{{event.date|format_datetime(locale='fr')}}</small>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="ui bottom attached tab" data-tab="third">
+    <a onclick="editGroup()" class="ui icon button">
+    <i class="edit icon"></i> Modifier le nom du groupe et/ou les participants
+    </a>
+</div>
+
+<div class="ui modal addLink">
+  <div class="header">Ajouter un lien</div>
+  <div class="content">
+    <div class="ui form">
+    {{form_start(linkForm)}}
+        <div class ="field">
+        <label>URL</label>
+        {{form_widget(linkForm.url)}}
+        </div>
+        <div class="field">
+        <label>Ajoutez une description du lien</label>
+        {{form_widget(linkForm.description)}}
+        </div>
+        <div class="actions">
+          <button type="submit" class="ui primary button">Valider</button>
+          <div class="ui cancel button">Annuler</div>
+        </div>
+    {{form_end(linkForm)}}
+    </div>
+  </div>
+</div>
+
+<div class="ui modal addCourse">
+  <div class="header">Ajouter un cours</div>
+  <div class="content">
+    <div class="ui form">
+    {{form_start(groupCourseForm)}}
+        <div class="field">
+        <label>Ajoutez un ou plusieurs cours existants</label>
+        {{form_widget(groupCourseForm.courses)}}
+        </div>
+        <div class="actions">
+          <button type="submit" class="ui primary button">Valider</button>
+          <div class="ui cancel button">Annuler</div>
+        </div>
+    {{form_end(groupCourseForm)}}
+    </div>
+  </div>
+</div> #}
+
+<div class="ui active modal editGroup">
+  <div class="header">Modifier le groupe</div>
+  <div class="content">
+    <div class="ui form">
+    {{form_start(usergroupForm)}}
+        <div class="field">
+            <label>Changer le nom du groupe ?</label>
+            {{form_widget(usergroupForm.name)}}
+        </div>
+        <div class="field">
+        <label>Ajoutez ou supprimez des utilisateurs</label>
+        {{form_widget(usergroupForm.users)}}
+        </div>
+        <div class="actions">
+          <button type="submit" class="ui primary button">Valider</button>
+          <div class="ui cancel button">Annuler</div>
+        </div>
+    {{form_end(usergroupForm)}}
+    </div>
+  </div>
+</div>
+
+<script>
+function addLink(){
+  $('.ui.modal.addLink')
+    .modal('show')
+  ;
+}
+function addCourse(){
+  $('.ui.modal.addCourse')
+    .modal('show')
+  ;
+}
+
+function editGroup(){
+  $('.ui.modal.editGroup')
+    .modal('show')
+  ;
+}
+$('.menu .item')
+  .tab()
+;
+
+$('.icon')
+  .popup()
+;
+</script>
+
+{% endblock %}

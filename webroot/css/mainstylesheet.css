@@ -1,0 +1,264 @@
+@font-face{
+    font-family: 'lemonMilk';
+  
+    src:url('../fonts/lemon_milk/LEMONMILK-MediumItalic.otf');
+  
+    font-stretch : normal;
+    font-weight : normal;
+    font-style : normal;
+  }
+
+@font-face{
+font-family: 'lemonMilkRegular';
+
+src:url('../fonts/lemon_milk/LEMONMILK-Regular.otf');
+
+font-stretch : normal;
+font-weight : normal;
+font-style : normal;
+}
+
+.main{
+    min-height:100vh;
+}
+
+.nomargintop{
+    margin-top: 0px !important;
+}
+
+#ElearningSearch{
+    width: 25em;
+}
+
+.searchImage{
+    position: absolute !important;
+    right: 25em;
+    top: 5.5em;
+}
+
+#registration_form_captcha{
+    width:50%;
+}
+#background{
+    width: 200%;
+    height: 500%;
+    margin-top : -9px;
+    margin-left : -50%;
+}
+.landingTitle{
+    margin-top: 10vh!important;
+    position: absolute !important;
+    font-family : "lemonMilk", serif !important;
+    color: white !important
+}
+.landingSubheader{
+    margin-top: 15vh!important;
+    position: absolute !important;
+    font-family : "lemonMilk", serif !important;
+    color: white !important
+}
+.landingCards{
+    padding-top: 23vh;
+}
+
+.marginright{
+    margin-right: 1em !important;
+}
+.blackTheme{
+    background: #1b1c1d !important;
+    color: rgba(255,255,255,.9) !important;;
+}
+
+.blackTheme>.item{
+    color: rgba(255,255,255,.9) !important;;
+}
+
+.lemonMilkRegularFont{
+    font-family : "lemonMilkRegular", sans-serif !important;
+}
+
+.scroll{
+    max-height: 50vh;
+    min-height: 50vh;
+    overflow-y: scroll;
+    scrollbar-color: rebeccapurple green;
+    scrollbar-width: thin;
+}
+
+.dnone{
+    display : none !important;
+}
+
+.smallX{
+    max-height: 20px !important;
+}
+
+.rightPos{
+    position: fixed !important;
+    right: 50%;
+}
+
+.sortable{
+    height: 20px !important;
+}
+
+.asc{
+    height: 20px !important;
+}
+
+.searchIndex{
+    display: flex !important;
+    justify-content: center;
+    align-items:center;
+}
+
+.searchIndexResults{
+    max-width: 50%;
+    margin-left: 25%;
+    margin-right: 25%;
+}
+
+.marginbot{
+    margin-bottom: 1vh !important;
+}
+
+.margintop{
+    margin-top: 1vh !important;
+}
+
+.marginleft{
+    margin-left: 5vh !important;
+}
+.bigmargintop{
+    margin-top: 170px !important;
+}
+
+.landingContent{
+
+    font-family : "lemonMilk", sans-serif !important;
+}
+
+html, body { height: 100% }
+
+.success.message{
+    position: absolute !important;
+    width: 70vh !important;
+    top: 12%;
+    z-index: 50;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.error.message{
+    position: absolute !important;
+    width: 70vh !important;
+    top: 12%;
+    z-index: 50;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.big{
+    height : 10rem !important
+}
+
+.errorPrompt{
+    position: absolute !important;
+    width: 70vh !important;
+    top: 12%;
+    z-index: 50;
+    left: 50%;
+    transform: translate(-50%, -50%); 
+}
+
+#tabbrowser-tabpanels {
+    background: var(--toolbar-bgcolor) !important;
+  }
+
+.Mobile{
+    display : none !important;
+}
+
+.PC{
+    display : block;
+}
+
+#date_start_date{
+    display: flex !important;
+    flex-direction: row !important;
+}
+
+#sub-frame-error{
+    display: none !important;
+}
+
+#main-frame-error{
+    display: none !important;
+}
+
+#date_start_time{
+    display: flex !important;
+    flex-direction: row !important;
+}
+
+.forcedisplay{
+    display: block !important;
+}
+
+#background{
+    margin-top: 12px !important;
+    
+}
+
+#fullname:hover + .dnone {
+    display: block;
+  }
+
+@media all and (orientation: portrait){
+
+    .Mobile{
+        display : flex !important;
+    }
+
+    .PC{
+        display : none !important;
+    }
+
+    .mobiledisabled{
+        display : none !important;
+    }
+
+    .white{
+        background-color: white !important;
+    }
+    
+    .landingTitle{
+        margin-top: 2vh !important;
+        position: fixed !important;
+        color: black !important
+    }
+
+    .mobilemenu{
+        z-index: 99;
+        margin-top: 0px !important;
+    }
+
+    .landingSubheader{
+        margin-top: 10vh !important;
+        position: fixed !important;
+        color: black !important
+    }
+
+    #background{
+        width: 150% !important;
+        height: 100%;
+        left: 30%;
+        margin-top : -15px !important;
+        margin-left : -50%;
+        position : absolute !important;
+    }
+
+    .landingCards {
+        padding-top: 15vh;
+    }
+}

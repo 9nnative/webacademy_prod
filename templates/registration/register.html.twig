@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+
+{% if app.user %}
+    <div class="ui warning message">
+    <i class="close icon"></i>
+    Vous êtes déjà connecté avec l'adresse {{ app.user.username }}. <a href="{{ path('app_logout') }}">Se déconnecter ?</a>
+    </div>
+{% endif %}
+  <h2 class="ui centered header">Vous y êtes presque !</h2>
+  <div class="ui stackable three column grid">
+    <div class="column PC"></div>
+    <div class="ui column form">
+    {{ form_start(registrationForm) }}
+        <div class="two fields">
+            <div class="field">
+            <label>Nom</label>
+            <div class="ui left icon input">
+                {{ form_widget(registrationForm.name) }}
+                <i class="user icon"></i>
+            </div>
+            </div>
+            <div class="field">
+            <label>Prénom</label>
+            <div class="ui left icon input">
+                {{ form_widget(registrationForm.forename) }}
+                <i class="user icon"></i>
+            </div>
+            </div>
+        </div>
+        <div class="field">
+          <label>E-mail</label>
+          <div class="ui left icon input">
+            {{ form_widget(registrationForm.email) }}
+            <i class="mail icon"></i>
+          </div>
+        </div>
+          <div class="field">
+          <label>Mot de passe</label>
+          <div class="ui left icon input">
+              {{ form_widget(registrationForm.plainPassword) }}
+              <i class="lock icon"></i>
+          </div>
+        </div>
+        <div class="field">
+        <label>Choisissez une photo de profil</label>
+        <div class="ui input">
+            {{ form_widget(registrationForm.profilepic) }}
+        </div>
+        </div>
+        <div class="field">
+        <label>Renseignez un code de test si nécéssaire</label>
+        <div class="ui input">
+          {{ form_widget(registrationForm.cheatcode) }}
+        </div>
+        </div>
+        <div class="ui center aligned">
+          <button type= "submit" class="ui primary marginbot button right floated">
+          S'inscrire
+          </button>
+        </div>
+  {{ form_end(registrationForm) }}
+  </div>
+
+  <div class="column PC"></div>
+</div>
+{% endblock %}

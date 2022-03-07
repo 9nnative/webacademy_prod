@@ -1,0 +1,46 @@
+{% if is_granted('ROLE_EXPERT') or is_granted('ROLE_ADMIN')%}
+
+  {% if usergroup is empty %}
+  <div class="ui message">
+    <div class="header">
+      Il n'y a rien à afficher ici pour le moment <i class="frown outline icon"></i>
+    </div>
+    <p>Pour accéder à l'historique des groupes, commencez par en <b>créer un</b> dans l'onglet "groupes"</p>
+  </div>
+  {% endif %}
+  {% for group in usergroup %}
+  <table class="ui sortable celled striped table">
+    <thead>
+      <tr><th colspan="2">
+        {{group.name}}
+      </th>
+      <th>Date</th>
+    </tr></thead>
+    <tbody>
+      {% for event in group.events|reverse %}
+          {% if event.type == "edit" %}
+          <tr>
+          <td class="collapsing">
+              <i class="edit icon"></i>
+          </td>
+          <td>{{event.actionby.forename}} {{event.actionby.name}} a modifié le groupe</td>
+          <td class="right aligned collapsing">{{event.date|format_datetime(locale='fr')}}</td>
+          </tr>
+          {% elseif event.type == "new" %}
+          <tr>
+          <td class="collapsing">
+              <i class="add icon"></i>
+          </td>
+          <td>{{event.actionby.forename}} {{event.actionby.name}} a créé le groupe</td>
+          <td class="right aligned collapsing">{{event.date|format_datetime(locale='fr')}}</td>
+          </tr>
+          {% endif %}
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endfor %}
+
+{% endif %}
+<script>
+$('table').tablesort()
+</script>

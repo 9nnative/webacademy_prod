@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Univers E-Learning{% endblock %}
+
+{% block body %}
+
+<div class="ui breadcrumb">
+  <a href="/" class="section">Accueil</a>
+  <i class="right arrow icon divider"></i>
+  <div class="active section">Tous les cours</div>
+</div>
+
+<div class="ui center aligned basic segment">
+    <h1 class="">{% trans %}Trouver un cours en ligne{% endtrans %}</h1>
+    <div id="searchInput" class="ui fluid category search">
+        <div class="ui icon input">
+        <input class="prompt" id="ElearningSearch" type="text" placeholder="{% trans %}Rechercher des cours ...{% endtrans %}">
+        <i class="search icon"></i>
+        </div>
+        <div class="results searchIndexResults"></div>
+    </div>
+</div>
+
+{% if app.user %}
+<div class="ui three item menu">
+  <a class="item active" data-tab="search"><i class="search icon"></i>Découvrir</a>
+  <a class="item" data-tab="myFavs" ><i class="ui heart outline icon"></i>Mes favoris</a>
+  <a class="item" data-tab="myCreations"><i class="ui folder outline icon"></i>Mes créations</a>
+</div>
+{% endif %}
+
+<div class="ui bottom attached tab active" data-tab="search">
+  {% include 'e_learning/index/search.html.twig' %}
+</div>
+
+{% if app.user %}
+<div class="ui bottom attached tab" data-tab="myFavs">
+  {% include 'e_learning/index/myfavs.html.twig' %}
+</div>
+<div class="ui bottom attached tab" data-tab="myCreations">
+  {% include 'e_learning/index/mycreations.html.twig' %}
+</div>
+{% endif %}
+
+<script>
+$('.menu .item')
+  .tab()
+;
+var content = [
+    {% for course in pagination %}
+    {% if course.state == 'published' %}
+    {
+      title: "{{course.title}}",
+      {% autoescape %}
+      description : "{{ (course.description|length > 100 ? course.description|slice(0, 100) ~ '...' : course.description)|raw  }}",
+      {% endautoescape %}
+      url: "/startCourse/{{course.slug}}",
+      image: "/uploads/coursesimages/{{course.brochurefilename}}",
+    },
+    {% endif %}
+    {% endfor %}
+];
+
+
+$('.ui.search')
+  .search({
+    source: content
+  })
+;
+
+</script>
+{% endblock %}

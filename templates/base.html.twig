@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>{% block title %}{% trans %}Bienvenue !{% endtrans %}{% endblock %}</title>
+        {% block stylesheets %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('icon/favicon.ico') }}" />
+        <link rel="stylesheet" href="{{ asset('js/fomantic-ui/dist/semantic.min.css') }}" />
+        <link rel="stylesheet"  href="{{ asset('css/semantic.min.css') }}" />
+        <link rel="stylesheet" href="{{ asset('css/mainstylesheet.css') }}" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/4.3.0/introjs.min.css" integrity="sha512-YZO1kAqr8VPYJMaOgT4ZAIP4OeCuAWoZqgdvVYjeqyfieNWrUTzZrrxpgAdDrS7nV3sAVTKdP6MSKhqaMU5Q4g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        {% endblock %}
+
+        {% block javascripts %}
+        <script src="{{ asset('js/jquery.min.js') }}"></script>
+        <script src="{{ asset('js/tablesort.js') }}"></script>
+        <script src="{{ asset('js/semantic.min.js') }}"></script>
+        <script src="{{ asset('js/fomantic-ui/dist/semantic.min.js') }}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/4.3.0/intro.min.js" integrity="sha512-WYNEDpX7FCz0ejmdUFl444n+v7gDgDFYmxy2YBx99v15UUk3zU5ZWYFBXFCvWYvd+nv/guwUnXmrecK7Ee0Wtg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="{{ asset('js/darkreader/darkreader.js') }}"></script>
+        <script src="https://cdn.tiny.cloud/1/0qtr3cjqqz144be0apd79tfmsr1vmvmkdalrmor3ta7w10wn/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+        {% endblock %}
+    </head>
+    <body>
+    
+    <div class="PC">
+        {% include 'navbar.html.twig' %}
+    </div>
+
+    {% include 'mobilenavbar.html.twig' %}
+
+    <div class="ui main container margintop" id="st122">
+    <!-- Flash messages -->
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}  
+            <div class="{{ label }}">
+                <div class="header">
+                {{ message }}
+                </div>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    <!-- Fin Flash messages -->
+    {% block body %}{% endblock %}
+    </div>
+    </body>
+    <div class="ui section divider"></div>
+        <footer>
+        <div class="ui container">
+            <div class="ui horizontal bulleted link list">
+            <p class="item">{% trans %} Version du site {% endtrans %} : <b>Beta v.1.5.1</b></p>
+            <a href="https://www.linkedin.com/in/corentin-grosdemange-39706a168/" target="_blank" class="item">
+                Développeur
+            </a>    
+            <a class="item">
+                Termes et conditions
+            </a>
+            <a class="item">
+                Politique de confidentialité
+            </a>
+            <a class="item">
+                Nous contacter
+            </a>
+            <p class='item'><a href="/newTicket">{% trans %}Signaler un bug{% endtrans %}</a></p>
+            </div>
+            <div class="ui tiny images">
+            <a href="https://www.ensgsi.univ-lorraine.fr/?lang=fr_fr" target='_blank'>
+                <img class="ui image" src="{{ asset('company/ensgsi.png') }}"/>
+            </a>
+            <a href="https://www.univ-lorraine.fr/" target='_blank'>
+                <img class="ui image" src="{{ asset('company/UL.png') }}"/>
+            </a>
+            </div>
+        </div>
+        </footer>
+    </div>
+    </div>
+    <script src="{{ asset('js/base.js') }}"></script>
+    <script>
+    {% if app.user %}
+        {% if app.user.darkmode == 1 %}
+            DarkReader.setFetchMethod(window.fetch)
+            DarkReader.enable({
+            brightness: 100,
+            contrast: 90,
+            sepia: 10
+            });
+        {% endif  %}
+    {% endif %}
+    </script>
+</html>

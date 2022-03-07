@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer une catégorie{% endblock %}
+
+{% block body %}
+
+<div class="ui two column grid">
+
+<div class="column">
+    <div class="ui form categoryform">
+    {{form_start(categoryForm)}}
+    <h2>Créer une catégorie</h2>
+        <div class="field">
+            <label>Nom</label>
+            {{form_widget(categoryForm.name)}}
+        </div>
+        <div class="actions">
+            {{form_widget(categoryForm.submit)}}
+        </div>
+    {{form_end(categoryForm)}}
+    </div>
+
+</div>
+
+<div class="column">
+    <h3>Catégories existantes</h3>
+    <div class="ui list">
+    {% for category in allCategories %}
+    <div class="item">{{category.name}} <a href="{{ path('delete_category', { 'id': category.id }) }}">Supprimer</a></div>
+    {% endfor %}
+    </div>
+</div>
+
+</div>
+
+{% endblock body %}

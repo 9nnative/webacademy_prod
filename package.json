@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "@ckeditor/ckeditor5-theme-lark": "^31.0.0",
+    "darkreader": "^4.9.43",
+    "fomantic-ui": "^2.8.8",
+    "particlesjs": "^2.2.3"
+  }
+}
