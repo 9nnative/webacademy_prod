@@ -193,9 +193,11 @@ class ELearningController extends AbstractController
     } else {
         // Notify editor that the upload failed
         header("HTTP/1.1 500 Server Error");
+
+        return new JsonResponse("failed");
     }
-        var_dump($temp);
-        die;
+
+        return new JsonResponse("success");
     }
     /**
      * @Route("/addCourseToFavorites/{slug}", name="addtofavorites")
