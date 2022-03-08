@@ -36,12 +36,12 @@
   {% if course.state == "saved" %}
     <tr>
       <td>
-        <h4 class="ui image header">
+        <a class="ui image header" href="/editCourse/{{course.slug}}">
           <img class="ui fluid image" src="/uploads/coursesimages/{{course.brochureFileName}}">
           <div class="content">
            {{course.title}}
           </div>
-      </h4></td>
+      </a></td>
       <td>
         {{ (course.description|length > 100 ? course.description|slice(0, 100) ~ '...' : course.description)|raw  }}
       </td>
@@ -81,13 +81,13 @@
   {% for course in usersCourses %}
   {% if course.state == "published" %}
     <tr>
-      <td class="selectable" href="/startCourse/{{course.slug}}">
-        <h4 class="ui image header">
+      <td class="selectable">
+        <a class="ui image header" href="/startCourse/{{course.slug}}">
           <img class="ui fluid image" src="/uploads/coursesimages/{{course.brochureFileName}}">
           <div class="content">
            {{course.title}}
           </div>
-      </h4></td>
+      </a></td>
       <td>
         {{ (course.description|length > 100 ? course.description|slice(0, 100) ~ '...' : course.description)|raw  }}
       </td>
