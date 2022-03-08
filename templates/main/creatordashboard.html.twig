@@ -36,7 +36,7 @@
   {% if course.state == "saved" %}
     <tr>
       <td>
-        <a class="ui image header" href="/editCourse/{{course.slug}}">
+        <a class="ui image header" href="{{path("editsections", { 'id': course.id })}}">
           <img class="ui fluid image" src="/uploads/coursesimages/{{course.brochureFileName}}">
           <div class="content">
            {{course.title}}
