@@ -327,7 +327,7 @@ tinymce.init({
 
   <br>
 
-  <a onclick="beforePublish()" data-content="Besoin d'aide ?" class="ui icon button">
+  <a onclick="tutoriel2()" data-content="Besoin d'aide ?" class="ui icon button">
       <i class="question circle outline icon"></i>
   </a>
 
@@ -335,7 +335,7 @@ tinymce.init({
     <i class="eraser icon"></i>
   </a>
  
-  <a href="/publishcourse/{{course.slug}}" id="publishCourse" class="ui labeled purple icon button right floated publish">
+  <a onclick="beforePublish()" id="publishCourse" class="ui labeled purple icon button right floated publish">
   Publier le cours
   <i class="cloud upload icon"></i> 
   </a>
@@ -359,13 +359,19 @@ tinymce.init({
 
   </script>
   </div>
+
+  <div class="ui modal">
+    <div class="header">Publier le cours ?</div>
+    <div class="actions">
+      <a href="/publishcourse/{{course.slug}}" class="ui approve button">Publier</a>
+      <div class="ui cancel button">Annuler</div>
+    </div>
+  </div>
+
 </div>
 
 <script src="{{ asset('js/sections.js') }}"></script>
 <script>
-
-
-
 function openModalTitle(){
   $('.ui.modal')
     .modal('show')
@@ -421,7 +427,9 @@ $('.ui.accordion')
 function beforePublish(){
 introJs()
 .onbeforeexit(function () {
-  return confirm("Publier le cours ?");
+  $('.mini.modal')
+    .modal('show')
+  ;
 })
 .setOption("nextLabel", "Suivant")
 .setOption("prevLabel", "Précédent")
