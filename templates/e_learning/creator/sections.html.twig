@@ -305,7 +305,7 @@ tinymce.init({
     {{form_widget(sectionForm.title)}}
     </div>
 
-    <div class="field">
+    <div id="tutoContent" class="field">
     <label>Contenu</label>
     {{form_widget(sectionForm.content)}}
     </div>
@@ -456,7 +456,7 @@ introJs()
 window.onload= tutoriel2();
 
 function tutoriel2(){
-  
+
 var title = document.getElementById("tutoAccTitle");
 title.classList.add("active");
 var content = document.getElementById("tutoAccContent");
@@ -476,18 +476,18 @@ introJs()
     element: document.querySelector('.ui .form .sectionMain'),
     intro: "Une section est constituée de plusieurs éléments"
   },{
-      element: document.querySelector('#title'),
+      element: document.querySelector('#section_title'),
     intro: "Un titre"
   },{
-      element: document.querySelector('#content'),
+      element: document.querySelector('#section_content'),
     intro: "Le contenu du chapitre"
   },{
-      element: document.querySelector('.tutotinymce'),
-    intro: "Voici l'éditeur de texte qui va vous permettre de créer le contenu de vos sections"
+      element: document.querySelector('#tutoContent'),
+    intro: "Voici l'éditeur de texte complet qui va vous permettre de créer le contenu de vos sections"
   },
   {
       element: document.querySelector('.medias'),
-    intro: "Vous pouvez y ajouter des médias"
+    intro: "Vous pouvez également y ajouter des fichiers (PDF, MP4, etc ...)"
   },{
     element: document.querySelector('#section_submit'),
     intro: "Une fois que les informations de la section ont été ajoutées, cliquez ici afin d'ajouter la section à votre cours."
