@@ -74,7 +74,7 @@ class MainController extends AbstractController
             $this->addFlash('error errorPrompt', 'Veuillez vous connecter');
             return $this->redirectToRoute('app_login');
         }
-        
+
         $currentUserNotifs = $this->getUser()->getNotifstate();
 
         if($currentUserNotifs == null){
@@ -254,6 +254,7 @@ class MainController extends AbstractController
                     'header' => $notif->getHeader(),
                     'content' => $notif->getContent(),
                     'id' => $notif->getId(),
+                    'slug' => $notif->getWgroup()->getCourse()->getSlug(),
                     'date' => $formatedDate,
                     'type' => $notif->getType(),
                 ];
