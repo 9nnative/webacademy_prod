@@ -70,6 +70,11 @@ class MainController extends AbstractController
      */
     public function toggleNotifs(Request $request)
     {   
+        if (!$this->getUser()) {
+            $this->addFlash('error errorPrompt', 'Veuillez vous connecter');
+            return $this->redirectToRoute('app_login');
+        }
+        
         $currentUserNotifs = $this->getUser()->getNotifstate();
 
         if($currentUserNotifs == null){
@@ -264,6 +269,11 @@ class MainController extends AbstractController
      */
     public function creatorDashboard(): Response
     {
+        if (!$this->getUser()) {
+            $this->addFlash('error errorPrompt', 'Veuillez vous connecter');
+            return $this->redirectToRoute('app_login');
+        }
+
         $usersCourses = $this->getUser()->getCourses();
 
         return $this->render('main/creatordashboard.html.twig', [
@@ -345,7 +355,7 @@ class MainController extends AbstractController
     public function userDetails(Request $request, UserPasswordEncoderInterface $passwordEncoder, SluggerInterface $slugger): Response
     {
         if(!$this->getUser()){
-            $this->addFlash('ui error errorPrompt message', '⚠️ Vous devez être connecté pour effectuer cette action');
+            $this->addFlash('ui error errorPrompt message', 'Vous devez être connecté pour effectuer cette action');
             return $this->redirect($request->headers->get('referer'));
         }
 

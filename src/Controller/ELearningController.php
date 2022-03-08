@@ -1073,7 +1073,7 @@ class ELearningController extends AbstractController
 
         }
 
-        return $this->redirectToRoute('course_details', ['slug' =>  $course->getSlug()]);
+        return $this->redirectToRoute('start_course', ['slug' =>  $course->getSlug()]);
        
     }
 }
