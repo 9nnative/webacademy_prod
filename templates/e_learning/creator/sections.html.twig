@@ -289,9 +289,9 @@ tinymce.init({
   <p class="timesave"></p>
 
   <div class="ui accordion">
-  <div class="currentNewSection title ui basic right labeled icon button"><i class="plus icon"></i>Ajouter une nouvelle section</div>
+  <div id="tutoAccTitle" class="currentNewSection title ui basic right labeled icon button"><i class="plus icon"></i>Ajouter une nouvelle section</div>
 
-  <div class="content">
+  <div id="tutoAccContent" class="content">
 
   <div class="ui horizontal divider">
     Section actuelle
@@ -453,9 +453,15 @@ introJs()
 ]}).start();
 }
 
-window.onload="tutoriel2()";
+window.onload= tutoriel2();
 
 function tutoriel2(){
+  
+var title = document.getElementById("tutoAccTitle");
+title.classList.add("active");
+var content = document.getElementById("tutoAccContent");
+content.classList.add("active");
+
 introJs()
 .setOption("nextLabel", "Suivant")
 .setOption("prevLabel", "Précédent")
