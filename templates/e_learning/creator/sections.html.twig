@@ -260,7 +260,7 @@ tinymce.init({
 
   {% endif %}
 
-  <div class="ui modal">
+  <div class="ui modal titlemodal">
     <i class="close icon"></i>
     <div class="header">
       Changer le titre du cours
@@ -360,7 +360,7 @@ tinymce.init({
   </script>
   </div>
 
-  <div class="ui mini modal">
+  <div class="ui mini modal publishmodal">
     <div class="header">Publier le cours ?</div>
     <div class="actions">
       <a href="/publishcourse/{{course.slug}}" class="ui approve button">Publier</a>
@@ -373,7 +373,7 @@ tinymce.init({
 <script src="{{ asset('js/sections.js') }}"></script>
 <script>
 function openModalTitle(){
-  $('.ui.modal')
+  $('.titlemodal')
     .modal('show')
   ;
 }
@@ -427,7 +427,7 @@ $('.ui.accordion')
 function beforePublish(){
 introJs()
 .onbeforeexit(function () {
-  $('.mini.modal')
+  $('.publishmodal')
     .modal('show')
   ;
 })
