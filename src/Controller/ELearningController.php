@@ -199,6 +199,8 @@ class ELearningController extends AbstractController
         // Notify editor that the upload failed
         header("HTTP/1.1 500dd Server Error");
         $this->addFlash('ui success message', 'rip');
+        
+        return new Response();
 
     }
 
