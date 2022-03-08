@@ -86,8 +86,6 @@ class ELearningController extends AbstractController
 
         $notification = $invitation->getNotification();
 
-        if($notification->getUser() == $currentUser){
-
         $entityManager = $this->getDoctrine()->getManager();
         $invitation->setStatus(1);
         $notification->setStatus(1);
@@ -99,14 +97,7 @@ class ELearningController extends AbstractController
 
         $this->addFlash('ui success message', 'Succès - Vous faites désormais parti du groupe de travail');
 
-        return $this->redirectToRoute('course_details', ['slug' =>  $courseSlug]);
-                    
-        }else{
-
-        $this->addFlash('ui error message', 'Erreur - Cette notification ne vous est pas destinée');
-        return $this->redirect($request->headers->get('referer'));
-
-        }
+        return $this->redirectToRoute('start_course', ['slug' =>  $courseSlug]);
     }
 
     /**

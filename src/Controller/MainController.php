@@ -254,6 +254,7 @@ class MainController extends AbstractController
                     'header' => $notif->getHeader(),
                     'content' => $notif->getContent(),
                     'id' => $notif->getId(),
+                    'inviteId' => $notif->getInviteToGroup()->getId(),
                     'slug' => $notif->getInviteToGroup()->getCourse()->getSlug(),
                     'date' => $formatedDate,
                     'type' => $notif->getType(),

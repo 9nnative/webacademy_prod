@@ -29,6 +29,7 @@ var existingToasts = myToast.toast('get toasts');
                         var type = obj['type'];
                         var header = obj['header'];
                         var date = obj['date'];
+                        var inviteId = obj['inviteId']
                         console.log(type);
                         console.log(date);
                         console.log(header);
@@ -86,7 +87,7 @@ var existingToasts = myToast.toast('get toasts');
                                     text: 'Rejoindre',
                                     class: 'ui primary button',
                                     click: function() {
-                                        window.location.href='/startCourse/'+ slug +'';
+                                        window.location.href='/acceptInvite/'+ inviteId +'';
                                     }},
                                     {
                                     text: 'Supprimer',
