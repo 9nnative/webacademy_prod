@@ -195,9 +195,12 @@ class ELearningController extends AbstractController
         // Use a location key to specify the path to the saved image resource.
         // { location : '/your/uploaded/image/file'}
         echo json_encode(array('location' => $baseurl . $filetowrite));
+        
+        return new Response();
+
     } else {
         // Notify editor that the upload failed
-        header("HTTP/1.1 500dd Server Error");
+        header("HTTP/1.1 500 Server Error");
         $this->addFlash('ui success message', 'rip');
         
         return;

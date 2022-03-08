@@ -39,6 +39,7 @@ tinymce.init({
       })
   },
   media_live_embeds: true,
+  block_unsupported_drop: true,
   media_url_resolver: function (data, resolve/*, reject*/) {
     if (data.url.indexOf('youtube.com') !== -1) {
       var embedHtml = '<iframe src="' + data.url +
@@ -50,6 +51,7 @@ tinymce.init({
   },
   extended_valid_elements: 'iframe[class|src|frameborder=0|alt|title|width|height|align|name]',
   tinycomments_mode: 'embedded',
+  images_upload_base_path: '/uploads/coursesfiles',
   tinycomments_author: currentAuthor,
     image_title: true,
   /* enable automatic uploads of images represented by blob or data URIs*/
