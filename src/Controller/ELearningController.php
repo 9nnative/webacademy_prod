@@ -191,6 +191,8 @@ class ELearningController extends AbstractController
     echo json_encode(array('location' => $baseurl . $filetowrite));
 
     } else {
+        var_dump($temp);
+        die;
         // Notify editor that the upload failed
         header("HTTP/1.1 500 Server Error");
     }
