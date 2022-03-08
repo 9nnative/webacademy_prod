@@ -420,6 +420,9 @@ $('.ui.accordion')
 
 function beforePublish(){
 introJs()
+.onbeforeexit(function () {
+  return confirm("Publier le cours ?");
+})
 .setOption("nextLabel", "Suivant")
 .setOption("prevLabel", "Précédent")
 .setOption("doneLabel", "Compris !")
