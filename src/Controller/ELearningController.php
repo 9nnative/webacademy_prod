@@ -510,7 +510,7 @@ class ELearningController extends AbstractController
         $entityManager->flush($course);
         $this->addFlash('ui success message sucessFlash', 'Succès - Le cours a correctement été publié !');
 
-        return $this->redirectToRoute('course_details', ['slug' => $course->getSlug()]);
+        return $this->redirectToRoute('start_course', ['slug' => $course->getSlug()]);
 
     }
 
