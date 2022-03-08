@@ -179,7 +179,7 @@ tinymce.init({
     Sections créées
   </div>
   {% set step = 0 %}
-    <div class="ui fluid styled accordion form">
+    <div class="ui fluid styled accordion form demoFormSections">
     {{form_start(courseSectionForm, {'attr': {'class': 'form_section_edit'}})}}
       {% for section in courseSectionForm.sections %}
       {% set step = step + 1 %}
@@ -430,7 +430,7 @@ introJs()
     intro: "Avant de publier le cours 📄"
   }, 
  {
-    element: document.querySelector('.updates'),
+    element: document.querySelector('.demoFormSections'),
     intro: "Vérifiez que vous avez mis à jour les modifications que vous avez effectué sur les anciennes sections créées"
   },{
       element: document.querySelector('#section_submit'),
@@ -441,6 +441,9 @@ introJs()
   }
 ]}).start();
 }
+
+window.onload="tutoriel2()";
+
 function tutoriel2(){
 introJs()
 .setOption("nextLabel", "Suivant")

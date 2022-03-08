@@ -194,10 +194,10 @@ class ELearningController extends AbstractController
         // Notify editor that the upload failed
         header("HTTP/1.1 500 Server Error");
 
-        return new JsonResponse("failed");
+        return new Response();
     }
 
-        return new JsonResponse("success");
+        return new Response();
     }
     /**
      * @Route("/addCourseToFavorites/{slug}", name="addtofavorites")
