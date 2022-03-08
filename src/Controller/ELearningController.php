@@ -200,7 +200,7 @@ class ELearningController extends AbstractController
         header("HTTP/1.1 500dd Server Error");
         $this->addFlash('ui success message', 'rip');
         
-        return new Response();
+        return;
 
     }
 
