@@ -19,6 +19,83 @@
 var TogetherJSConfig_something = "foo";
   // TogetherJS configuration would go here, but we'll talk about that
   // later
+TogetherJSConfig_on_ready = function () {
+  MyApp.on("visibilityChange", fireTogetherJSVisibility);
+};
+TogetherJSConfig_on_close = function () {
+  MyApp.off("visibilityChange", fireTogetherJSVisibility);
+};
+function fireTogetherJSVisibility(element, isVisible) {
+  TogetherJS.send({type: "visibilityChange", isVisible: isVisible, element: element});
+}
+function fireTogetherJSVisibility(element, isVisible) {
+  var elementFinder = TogetherJS.require("elementFinder");
+  var location = elementFinder.elementLocation(element);
+  TogetherJS.send({type: "visibilityChange", isVisible: isVisible, element: location});
+}
+TogetherJS.hub.on("visibilityChange", function (msg) {
+  var elementFinder = TogetherJS.require("elementFinder");
+  // If the element can't be found this will throw an exception:
+  var element = elementFinder.findElement(msg.element);
+  MyApp.changeVisibility(element, msg.isVisible);
+});
+
+var visibilityChangeFromRemote = false;
+
+function fireTogetherJSVisibility(element, isVisible) {
+  if (visibilityChangeFromRemote) {
+    return;
+  }
+  var elementFinder = TogetherJS.require("elementFinder");
+  var location = elementFinder.elementLocation(element);
+  TogetherJS.send({type: "visibilityChange", isVisible: isVisible, element: location});
+}
+TogetherJS.hub.on("visibilityChange", function (msg) {
+  if (! msg.sameUrl) {
+    return;
+  }
+  var elementFinder = TogetherJS.require("elementFinder");
+  // If the element can't be found this will throw an exception:
+  var element = elementFinder.findElement(msg.element);
+  visibilityChangeFromRemote = true;
+  try {
+    MyApp.changeVisibility(element, msg.isVisible);
+  } finally {
+    visibilityChangeFromRemote = false;
+  }
+});
+
+TogetherJS.hub.on("togetherjs.hello", function (msg) {
+  if (! msg.sameUrl) {
+    return;
+  }
+  MyApp.allToggleElements.forEach(function (el) {
+    var isVisible = $(el).is(":visible");
+    fireTogetherJSVisibility(el, isVisible);
+  });
+});
+$.fn.syncShow = function () {
+  this.show();
+  this.trigger("visibilityChange");
+};
+
+$.fn.syncHide = function () {
+  this.hide();
+  this.trigger("visibilityChange");
+};
+
+$(document).on("visibilityChange", function () {
+  MyApp.emit("visibilityChange", this, $(this).is(":visible"));
+});
+
+MyApp.changeVisibility = function (el, isVisible) {
+  if (isVisible && ! el.is(":visible")) {
+    el.syncShow();
+  } else if ((! isVisible) && el.is(":visible")) {
+    el.syncHide();
+  }
+};
+
 </script>
 <script src="https://togetherjs.com/togetherjs-min.js"></script>
 
