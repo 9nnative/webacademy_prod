@@ -30,26 +30,6 @@ TogetherJSConfig_hubBase = "https://hub.togetherjs.com";
 var TogetherJSConfig_something = "foo";
   // TogetherJS configuration would go here, but we'll talk about that
   // later
-TogetherJSConfig_on_ready = function () {
-  MyApp.on("visibilityChange", fireTogetherJSVisibility);
-};
-TogetherJSConfig_on_close = function () {
-  MyApp.off("visibilityChange", fireTogetherJSVisibility);
-};
-function fireTogetherJSVisibility(element, isVisible) {
-  TogetherJS.send({type: "visibilityChange", isVisible: isVisible, element: element});
-}
-function fireTogetherJSVisibility(element, isVisible) {
-  var elementFinder = TogetherJS.require("elementFinder");
-  var location = elementFinder.elementLocation(element);
-  TogetherJS.send({type: "visibilityChange", isVisible: isVisible, element: location});
-}
-TogetherJS.hub.on("visibilityChange", function (msg) {
-  var elementFinder = TogetherJS.require("elementFinder");
-  // If the element can't be found this will throw an exception:
-  var element = elementFinder.findElement(msg.element);
-  MyApp.changeVisibility(element, msg.isVisible);
-});
 
 var visibilityChangeFromRemote = false;
 
