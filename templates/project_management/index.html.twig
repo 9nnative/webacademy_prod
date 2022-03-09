@@ -28,64 +28,6 @@ TogetherJS_hub_on = {
 TogetherJSConfig_hubBase = "https://hub.togetherjs.com";
 
 var TogetherJSConfig_something = "foo";
-  // TogetherJS configuration would go here, but we'll talk about that
-  // later
-
-var visibilityChangeFromRemote = false;
-
-function fireTogetherJSVisibility(element, isVisible) {
-  if (visibilityChangeFromRemote) {
-    return;
-  }
-  var elementFinder = TogetherJS.require("elementFinder");
-  var location = elementFinder.elementLocation(element);
-  TogetherJS.send({type: "visibilityChange", isVisible: isVisible, element: location});
-}
-TogetherJS.hub.on("visibilityChange", function (msg) {
-  if (! msg.sameUrl) {
-    return;
-  }
-  var elementFinder = TogetherJS.require("elementFinder");
-  // If the element can't be found this will throw an exception:
-  var element = elementFinder.findElement(msg.element);
-  visibilityChangeFromRemote = true;
-  try {
-    MyApp.changeVisibility(element, msg.isVisible);
-  } finally {
-    visibilityChangeFromRemote = false;
-  }
-});
-
-TogetherJS.hub.on("togetherjs.hello", function (msg) {
-  if (! msg.sameUrl) {
-    return;
-  }
-  MyApp.allToggleElements.forEach(function (el) {
-    var isVisible = $(el).is(":visible");
-    fireTogetherJSVisibility(el, isVisible);
-  });
-});
-$.fn.syncShow = function () {
-  this.show();
-  this.trigger("visibilityChange");
-};
-
-$.fn.syncHide = function () {
-  this.hide();
-  this.trigger("visibilityChange");
-};
-
-$(document).on("visibilityChange", function () {
-  MyApp.emit("visibilityChange", this, $(this).is(":visible"));
-});
-
-MyApp.changeVisibility = function (el, isVisible) {
-  if (isVisible && ! el.is(":visible")) {
-    el.syncShow();
-  } else if ((! isVisible) && el.is(":visible")) {
-    el.syncHide();
-  }
-};
 
 </script>
 
