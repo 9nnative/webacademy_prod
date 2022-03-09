@@ -7,7 +7,7 @@
 <div class="ui accordion">
   <div class="title">
     <i class="dropdown icon"></i>
-   <i class="info circle icon"></i>Informations
+   <i class="info circle icon"></i>{% trans %}Informations{% endtrans %}
   </div>
     <div class="content">
     <div class="ui two column stackable grid">
@@ -15,20 +15,20 @@
         <img class="ui image" src="/uploads/coursesimages/{{course.brochureFileName}}">
     </div>
     <div class="column">
-        <p><b>Prérequis</b></p>
+        <p><b>{% trans %}Prérequis{% endtrans %}</b></p>
         <p>{{course.prerequis}}</p>
         <div class="ui divider"></div>
-        <p><b>Objectifs pédagogiques</b></p>
+        <p><b>{% trans %}Objectifs pédagogiques{% endtrans %}</b></p>
         <p>{{course.objectifspedago}}</p>
         <div class="ui divider"></div>
-        <p>Date de début du cours : {{course.datestart|format_datetime(locale='fr')}}</p>
-        <p>Date de fin du cours : {{course.dateend|format_datetime(locale='fr')}}</p>
+        <p>{% trans %}Date de début du cours : {% endtrans %}{{course.datestart|format_datetime(locale='fr')}}</p>
+        <p>{% trans %}Date de fin du cours : {% endtrans %}{{course.dateend|format_datetime(locale='fr')}}</p>
         <div class="ui divier"></div>
         <p><i class="clock outline icon"></i> {{course.duration}}</p>
     </div>
     </div>
       <div class="ui divider"></div>
-      <p><b>Créateur du cours</b></p>
+      <p><b>{% trans %}Créateur du cours{% endtrans %}</b></p>
       <a class="ui basic image label">
       <img src="/uploads/profilepics/{{course.createdby.brochurefilename}}">
       {{course.createdby.name}} {{course.createdby.forename}}
@@ -68,7 +68,7 @@
 <table class="ui celled striped table">
   <thead>
     <tr><th colspan="3">
-      Documents
+      {% trans %}Documents{% endtrans %}
     </th>
   </tr></thead>
   <tbody>

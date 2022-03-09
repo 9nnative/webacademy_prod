@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Espace créateur{% endblock %}
+{% block title %}{% trans %}Espace créateur{% endtrans %}{% endblock %}
 
 {% block body %}
 
@@ -68,14 +68,14 @@
 <div class="ui divider"></div>
 
 <div class="publishedcourses">  
-<h3>Mes cours publiés</h3>
+<h3>{% trans %}Mes cours publiés{% endtrans %}</h3>
 <table class="ui very basic sortable celled table">
   <thead>
-    <tr><th>Titre</th>
-    <th>Description</th>
+    <tr><th>{% trans %}Titre{% endtrans %}</th>
+    <th>{% trans %}Description{% endtrans %}</th>
     <th>Date</th>
-    <th>Nombre de vues</th>
-    <th>Est publié</th>
+    <th>{% trans %}Nombre de vues{% endtrans %}</th>
+    <th>{% trans %}Est publié{% endtrans %}</th>
   </tr></thead>
   <tbody>
   {% for course in usersCourses %}
@@ -97,7 +97,7 @@
       <td>
         {{course.views}}
       </td>
-      <td class="positive">Publié ✅</td>
+      <td class="positive">{% trans %}Publié {% endtrans %}✅</td>
       </td>
     </tr>
   {% endif %}

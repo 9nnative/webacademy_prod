@@ -94,11 +94,11 @@
         <target>Search...</target>
       </trans-unit>
       <trans-unit id="XiuOllA" resname="Sign up">
-        <source>Inscription</source>
+        <source>Sign up</source>
         <target>Sign up</target>
       </trans-unit>
       <trans-unit id="6QTU.k_" resname="Log-in">
-        <source>Connexion</source>
+        <source>Log-in</source>
         <target>Log-in</target>
       </trans-unit>
       <trans-unit id="6SsPmQh" resname="Connecté">
@@ -108,6 +108,186 @@
       <trans-unit id="sYru0ag" resname="Se déconnecter">
         <source>Se déconnecter</source>
         <target>Log out</target>
+      </trans-unit>
+      <trans-unit id="S0LGaQ6" resname="Administration">
+        <source>Administration</source>
+        <target>Administration</target>
+      </trans-unit>
+      <trans-unit id="kWI1BFl" resname="Mes favoris">
+        <source>Mes favoris</source>
+        <target>My favorites</target>
+      </trans-unit>
+      <trans-unit id="FwdqQPs" resname="Signaler un bug">
+        <source>Signaler un bug</source>
+        <target>Report a bug</target>
+      </trans-unit>
+      <trans-unit id="cCj9SCu" resname="Dites-nous en plus sur votre profil">
+        <source>Dites-nous en plus sur votre profil</source>
+        <target>Tell us more about yourself</target>
+      </trans-unit>
+      <trans-unit id="tkVQccd" resname="Trouver un cours en ligne">
+        <source>Trouver un cours en ligne</source>
+        <target>Find an online course</target>
+      </trans-unit>
+      <trans-unit id="Mrf8Gtl" resname="Rechercher des cours ...">
+        <source>Rechercher des cours ...</source>
+        <target>Search courses ...</target>
+      </trans-unit>
+      <trans-unit id="ZHBqP7k" resname="Administration du site">
+        <source>Administration du site</source>
+        <target>Site administration</target>
+      </trans-unit>
+      <trans-unit id="zAc6ix7" resname="Bienvenue sur Web Academy !">
+        <source>Bienvenue sur Web Academy !</source>
+        <target>Welcome on Web Academy !</target>
+      </trans-unit>
+      <trans-unit id="j4VzPnj" resname="Crééz, innovez, apprenez&lt;/small&gt;">
+        <source>Crééz, innovez, apprenez&lt;/small&gt;</source>
+        <target>Create, innovate, learn</target>
+      </trans-unit>
+      <trans-unit id="WB3iU58" resname="Comptes créés">
+        <source>Comptes créés</source>
+        <target>Created accounts</target>
+      </trans-unit>
+      <trans-unit id="Mt6EQPN" resname="Utilisateurs en ligne">
+        <source>Utilisateurs en ligne</source>
+        <target>Online users</target>
+      </trans-unit>
+      <trans-unit id="W.Dr5ym" resname="Tous les cours">
+        <source>Tous les cours</source>
+        <target>All courses</target>
+      </trans-unit>
+      <trans-unit id="l3rmyww" resname="Découvrir">
+        <source>Découvrir</source>
+        <target>Discover</target>
+      </trans-unit>
+      <trans-unit id="OllIo0Q" resname="Mes créations">
+        <source>Mes créations</source>
+        <target>My creations</target>
+      </trans-unit>
+      <trans-unit id="YURlghB" resname="Fichiers liés au cours">
+        <source>Fichiers liés au cours</source>
+        <target>Course related files</target>
+      </trans-unit>
+      <trans-unit id="3xbbWsa" resname="Activé">
+        <source>Activé</source>
+        <target>On</target>
+      </trans-unit>
+      <trans-unit id="2mD.NbI" resname="Désactivé">
+        <source>Désactivé</source>
+        <target>Disabled</target>
+      </trans-unit>
+      <trans-unit id="v4r8Oaj" resname="Aucun fichier n'a été ajouté à la section">
+        <source>Aucun fichier n'a été ajouté à la section</source>
+        <target>No files were added to the section</target>
+      </trans-unit>
+      <trans-unit id="ko5l9Xs" resname="Données du cours">
+        <source>Données du cours</source>
+        <target>Course data</target>
+      </trans-unit>
+      <trans-unit id="eOeSABC" resname="Titre">
+        <source>Titre</source>
+        <target>Title</target>
+      </trans-unit>
+      <trans-unit id="Um4Ah8w" resname="Description">
+        <source>Description</source>
+        <target>Description</target>
+      </trans-unit>
+      <trans-unit id="PkAxAvZ" resname="Créé le">
+        <source>Créé le</source>
+        <target>Created at</target>
+      </trans-unit>
+      <trans-unit id="TO9uvvq" resname="Certifiant">
+        <source>Certifiant</source>
+        <target>Certifying</target>
+      </trans-unit>
+      <trans-unit id="CpBAdjn" resname="Oui">
+        <source>Oui</source>
+        <target>Yes</target>
+      </trans-unit>
+      <trans-unit id="f2JJawy" resname="Non">
+        <source>Non</source>
+        <target>No</target>
+      </trans-unit>
+      <trans-unit id="cdC61Cr" resname="Durée">
+        <source>Durée</source>
+        <target>Duration</target>
+      </trans-unit>
+      <trans-unit id="SqmTRs1" resname="Nombre de vues">
+        <source>Nombre de vues</source>
+        <target>Views</target>
+      </trans-unit>
+      <trans-unit id="3mjtw8e" resname="Nombre de sections">
+        <source>Nombre de sections</source>
+        <target>Chapter numbers</target>
+      </trans-unit>
+      <trans-unit id="3k3QMpe" resname="État">
+        <source>État</source>
+        <target>State</target>
+      </trans-unit>
+      <trans-unit id="QSvguc1" resname="Informations">
+        <source>Informations</source>
+        <target>Data</target>
+      </trans-unit>
+      <trans-unit id="vSWrJ9R" resname="Prérequis">
+        <source>Prérequis</source>
+        <target>Prerequisites</target>
+      </trans-unit>
+      <trans-unit id="ofRDTYE" resname="Objectifs pédagogiques">
+        <source>Objectifs pédagogiques</source>
+        <target>Educational goals</target>
+      </trans-unit>
+      <trans-unit id="fRahYNe" resname="Date de début du cours :">
+        <source>Date de début du cours :</source>
+        <target>Course start date :</target>
+      </trans-unit>
+      <trans-unit id="QZaQbVP" resname="Date de fin du cours :">
+        <source>Date de fin du cours :</source>
+        <target>Course end date :</target>
+      </trans-unit>
+      <trans-unit id="urhpom8" resname="Créateur du cours">
+        <source>Créateur du cours</source>
+        <target>Course creator</target>
+      </trans-unit>
+      <trans-unit id="tOkp2Lz" resname="Documents">
+        <source>Documents</source>
+        <target>Files</target>
+      </trans-unit>
+      <trans-unit id="Fs10Pr4" resname="Est publié">
+        <source>Est publié</source>
+        <target>Is published</target>
+      </trans-unit>
+      <trans-unit id="vrLAu.G" resname="Publié">
+        <source>Publié</source>
+        <target>Published</target>
+      </trans-unit>
+      <trans-unit id="4gU.tot" resname="En ligne">
+        <source>En ligne</source>
+        <target>Online</target>
+      </trans-unit>
+      <trans-unit id="r6kpZ3Q" resname="Découvrez une plateforme unique pour tous vos besoins en e-learning. Accompagnement continu. LMS innovant &amp; sécurisé.">
+        <source>Découvrez une plateforme unique pour tous vos besoins en e-learning. Accompagnement continu. LMS innovant et sécurisé.</source>
+        <target>Discover a single platform for all your e-learning needs. Continuous support. Innovative and secure LMS.</target>
+      </trans-unit>
+      <trans-unit id="VVNGEsa" resname="C'est parti !">
+        <source>C'est parti !</source>
+        <target>Let's go !</target>
+      </trans-unit>
+      <trans-unit id="PxrlQqe" resname="Bientôt disponible">
+        <source>Bientôt disponible</source>
+        <target>Coming soon</target>
+      </trans-unit>
+      <trans-unit id="OCBqb_I" resname="Application des techniques de gestion de projets afin d'atteindre des objectifs précis.">
+        <source>Application des techniques de gestion de projets afin d'atteindre des objectifs précis.</source>
+        <target>Project Management app to achieve specific objectives</target>
+      </trans-unit>
+      <trans-unit id="U74iX6T" resname="Réseau social basé autour de l'innovation">
+        <source>Réseau social basé autour de l'innovation</source>
+        <target>Social network based around innovation</target>
+      </trans-unit>
+      <trans-unit id="2xqgoBy" resname="Édition de l'utilisateur">
+        <source>Édition de l'utilisateur</source>
+        <target>User edition</target>
       </trans-unit>
     </body>
   </file>

@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Univers E-Learning{% endblock %}
+{% block title %}{% trans %}Univers E-Learning{% endtrans %}{% endblock %}
 
 {% block body %}
 
 <div class="ui breadcrumb">
-  <a href="/" class="section">Accueil</a>
+  <a href="/" class="section">{% trans %}Accueil{% endtrans %}</a>
   <i class="right arrow icon divider"></i>
-  <div class="active section">Tous les cours</div>
+  <div class="active section">{% trans %}Tous les cours{% endtrans %}</div>
 </div>
 
 <div class="ui center aligned basic segment">
@@ -23,9 +23,9 @@
 
 {% if app.user %}
 <div class="ui three item menu">
-  <a class="item active" data-tab="search"><i class="search icon"></i>Découvrir</a>
-  <a class="item" data-tab="myFavs" ><i class="ui heart outline icon"></i>Mes favoris</a>
-  <a class="item" data-tab="myCreations"><i class="ui folder outline icon"></i>Mes créations</a>
+  <a class="item active" data-tab="search"><i class="search icon"></i>{% trans %}Découvrir{% endtrans %}</a>
+  <a class="item" data-tab="myFavs" ><i class="ui heart outline icon"></i>{% trans %}Mes favoris{% endtrans %}</a>
+  <a class="item" data-tab="myCreations"><i class="ui folder outline icon"></i>{% trans %}Mes créations{% endtrans %}</a>
 </div>
 {% endif %}
 
