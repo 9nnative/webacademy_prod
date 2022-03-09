@@ -46,8 +46,11 @@ const editor = new EditorJS({
       inlineToolbar : true
     },
     image: {
-      class: Image,
+      class: SimpleImage,
       inlineToolbar : true
+        config: {
+          placeholder: 'Paste image URL'
+        },
     },
     embed: {
       class: Embed,
