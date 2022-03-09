@@ -94,11 +94,11 @@
         <target>Search...</target>
       </trans-unit>
       <trans-unit id="XiuOllA" resname="Sign up">
-        <source>Sign up</source>
+        <source>Inscription</source>
         <target>Sign up</target>
       </trans-unit>
       <trans-unit id="6QTU.k_" resname="Log-in">
-        <source>Log-in</source>
+        <source>Connexion</source>
         <target>Log-in</target>
       </trans-unit>
       <trans-unit id="6SsPmQh" resname="Connecté">
