@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello Project-Management Controller!{% endblock %}
+
+{% block body %}
+
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@2.23.2/dist/editor.min.js"></script>
+
+<div class="example-wrapper">
+    <h1>Hello {{ controller_name }}! ✅</h1>
+
+    <div id="editorjs"></div>
+    
+</div>
+
+<script>
+const editor = new EditorJS({
+  /**
+   * Id of Element that should contain Editor instance
+   */
+  holder: 'editorjs'
+
+  tools: { 
+    header: {
+      class: Header, 
+      inlineToolbar: ['link'] 
+    }, 
+    list: { 
+      class: List, 
+      inlineToolbar: true 
+    } 
+  },
+});
+</script>
+{% endblock %}
