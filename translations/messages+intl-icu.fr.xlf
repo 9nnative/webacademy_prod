@@ -94,11 +94,11 @@
         <target>Search...</target>
       </trans-unit>
       <trans-unit id="XiuOllA" resname="Sign up">
-        <source>Inscription</source>
+        <source>Sign up</source>
         <target>Sign up</target>
       </trans-unit>
       <trans-unit id="6QTU.k_" resname="Log-in">
-        <source>Connexion</source>
+        <source>Log-in</source>
         <target>Log-in</target>
       </trans-unit>
       <trans-unit id="6SsPmQh" resname="Connecté">
@@ -266,7 +266,7 @@
         <target>Online</target>
       </trans-unit>
       <trans-unit id="r6kpZ3Q" resname="Découvrez une plateforme unique pour tous vos besoins en e-learning. Accompagnement continu. LMS innovant &amp; sécurisé.">
-        <source>Découvrez une plateforme unique pour tous vos besoins en e-learning. Accompagnement continu. LMS innovant et sécurisé.</source>
+        <source>Découvrez une plateforme unique pour tous vos besoins en e-learning. Accompagnement continu. LMS innovant &amp; sécurisé.</source>
         <target>Discover a single platform for all your e-learning needs. Continuous support. Innovative and secure LMS.</target>
       </trans-unit>
       <trans-unit id="VVNGEsa" resname="C'est parti !">
