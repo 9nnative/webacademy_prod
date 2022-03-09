@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}{% trans %}Connexion{% endtrans %}{% endblock %}
 
 {% block body %}
 <form method="post">
@@ -11,7 +11,7 @@
     {% if app.user %}
     <div class="ui message">
         <p>
-            Il semble que vous êtes déjà connecté avec l'adresse : {{ app.user.username }} <a href="{{ path('app_logout') }}">Se déconnecter ?</a>
+            {% trans %}Il semble que vous êtes déjà connecté avec l'adresse : {% endtrans %}{{ app.user.username }} <a href="{{ path('app_logout') }}">{% trans %}Se déconnecter ?{% endtrans %}</a>
         </p>
     </div>
     {% endif %}

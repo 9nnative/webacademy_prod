@@ -289,6 +289,22 @@
         <source>Édition de l'utilisateur</source>
         <target>User edition</target>
       </trans-unit>
+      <trans-unit id="YdaVBBA" resname="Connexion">
+        <source>Connexion</source>
+        <target>Log in</target>
+      </trans-unit>
+      <trans-unit id="EbWaZwY" resname="Il semble que vous êtes déjà connecté avec l'adresse :">
+        <source>Il semble que vous êtes déjà connecté avec l'adresse :</source>
+        <target>It seems that you are already connected with the address:</target>
+      </trans-unit>
+      <trans-unit id="bKHGHOi" resname="Se déconnecter ?">
+        <source>Se déconnecter ?</source>
+        <target>Log out ?</target>
+      </trans-unit>
+      <trans-unit id="z7GsDIB" resname="Inscription">
+        <source>Inscription</source>
+        <target>Sign up</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
