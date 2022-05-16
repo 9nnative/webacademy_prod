@@ -1,3 +1,18 @@
+<div class="ui segment">
+  <th{% if pagination.isSorted('title') %} class="sorted"{% endif %}>
+      {{ knp_pagination_sortable(pagination, 'Titre', 'title') }}
+  </th>
+  <th{% if pagination.isSorted('created_at') %} class="sorted"{% endif %}>
+      {{ knp_pagination_sortable(pagination, 'Nouveauté', 'created_at') }}
+  </th>
+  <th{% if pagination.isSorted('is_paying') %} class="sorted"{% endif %}>
+      {{ knp_pagination_sortable(pagination, 'Payant', 'is_paying') }}
+  </th>
+  <th{% if pagination.isSorted('created_by') %} class="sorted"{% endif %}>
+      {{ knp_pagination_sortable(pagination, 'Créateur', 'created_by') }}
+  </th>
+</div>
+
 <div class="ui stackable three column grid stackable cards">
 {% for course in pagination %}
 {% if course.state == 'published' %}
@@ -38,7 +53,7 @@
       <a class="ui bottom basic orange label"><i class="certificate icon"></i>Cours certifiant</a>
       {% endif %}
       {% if course.ispaying == 1 %}
-      <a class="ui bottom basic orange icon label"><i class="lock icon"></i>Abonnement requis</a>
+      <a class="ui bottom basic orange icon label"><i class="lock icon"></i>  Abonnement requis</a>
       {% else %}
       <a class="ui bottom basic green label"><i class="gem icon"></i>Libre accès</a>
       {% endif %}  
@@ -46,4 +61,9 @@
   </div>
 {% endif %}
 {% endfor %}
+</div>
+
+<br></br>
+<div class="navigation">
+    {{ knp_pagination_render(pagination) }}
 </div>

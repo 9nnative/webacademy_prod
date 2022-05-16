@@ -65,7 +65,7 @@ class ELearningController extends AbstractController
             $request->query->getInt('page', 1), /*page number*/
             20 /*limit per page*/
         );  
-
+        
         $categoriesRepository = $this->getDoctrine()->getRepository(Category::class);
         $allcategories = $categoriesRepository->findAll();
 

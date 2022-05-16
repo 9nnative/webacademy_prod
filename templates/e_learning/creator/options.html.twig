@@ -1,6 +1,11 @@
 <div class="ui attached segment options form"> 
 
     <div class="field">
+        <label>Séléctionnez les cibles de votre cours</label>
+        {{form_widget(courseForm.targets)}}
+    </div>
+
+    <div class="field">
       <label>Durée du cours</label>
         <div class="ui calendar" id="duration">
         {{form_widget(courseForm.duration)}}

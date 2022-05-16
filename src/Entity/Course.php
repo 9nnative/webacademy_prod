@@ -172,6 +172,11 @@ class Course
      */
     private $autosave;
 
+    /**
+     * @ORM\Column(type="array")
+     */
+    private $targets = [];
+
 
     public function __construct()
     {
@@ -696,6 +701,18 @@ class Course
     public function setAutosave(?bool $autosave): self
     {
         $this->autosave = $autosave;
+
+        return $this;
+    }
+
+    public function getTargets(): ?array
+    {
+        return $this->targets;
+    }
+
+    public function setTargets(array $targets): self
+    {
+        $this->targets = $targets;
 
         return $this;
     }

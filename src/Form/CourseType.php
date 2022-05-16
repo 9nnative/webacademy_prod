@@ -15,6 +15,7 @@ use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -50,6 +51,15 @@ class CourseType extends AbstractType
                 'attr' => ['class' => 'ui search dropdown'],
 
             ])
+            ->add('targets', ChoiceType::class, [
+                'choices'  => [
+                    'Industriel' => 'Industriel',
+                    'Collectivité' => 'Collectivité',
+                    'Étudiant' => 'Étudiant',
+                ],
+                'multiple' => true,
+                'attr' => ['class' => 'ui search dropdown'],
+            ])
             ->add('brochure', FileType::class, [
                 // make it optional so you don't have to re-upload the PDF file
                 // every time you edit the Product details
@@ -65,7 +75,7 @@ class CourseType extends AbstractType
                         'mimeTypes' => [
                             'image/*',
                         ],
-                        'mimeTypesMessage' => 'Please upload a valid image',
+                        'mimeTypesMessage' => 'Seules les images sont acceptées',
                     ])
                 ],
             ])
