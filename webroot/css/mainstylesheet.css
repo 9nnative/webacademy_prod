@@ -214,6 +214,15 @@ html, body { height: 100% }
     display: block;
   }
 
+.forcerow{
+   display: flex !important;
+   flex-direction: row !important;
+}
+
+.margtiny{
+    margin-top : 3px !important;
+}
+
 @media all and (orientation: portrait){
 
     .Mobile{

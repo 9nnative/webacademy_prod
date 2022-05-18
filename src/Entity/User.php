@@ -169,6 +169,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $tickets;
 
+    /**
+     * @ORM\OneToMany(targetEntity=FeedEvent::class, mappedBy="created_by")
+     */
+    private $feedEvents;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=FeedEvent::class, mappedBy="likes")
+     */
+    private $feedLikes;
+
     public function __construct()
     {
         $this->courses = new ArrayCollection();
@@ -184,6 +194,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->accesses = new ArrayCollection();
         $this->notifs = new ArrayCollection();
         $this->tickets = new ArrayCollection();
+        $this->feedEvents = new ArrayCollection();
+        $this->feedLikes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -775,6 +787,63 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             if ($ticket->getCreatedBy() === $this) {
                 $ticket->setCreatedBy(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FeedEvent>
+     */
+    public function getFeedEvents(): Collection
+    {
+        return $this->feedEvents;
+    }
+
+    public function addFeedEvent(FeedEvent $feedEvent): self
+    {
+        if (!$this->feedEvents->contains($feedEvent)) {
+            $this->feedEvents[] = $feedEvent;
+            $feedEvent->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFeedEvent(FeedEvent $feedEvent): self
+    {
+        if ($this->feedEvents->removeElement($feedEvent)) {
+            // set the owning side to null (unless already changed)
+            if ($feedEvent->getCreatedBy() === $this) {
+                $feedEvent->setCreatedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FeedEvent>
+     */
+    public function getFeedLikes(): Collection
+    {
+        return $this->feedLikes;
+    }
+
+    public function addFeedLike(FeedEvent $feedLike): self
+    {
+        if (!$this->feedLikes->contains($feedLike)) {
+            $this->feedLikes[] = $feedLike;
+            $feedLike->addLike($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFeedLike(FeedEvent $feedLike): self
+    {
+        if ($this->feedLikes->removeElement($feedLike)) {
+            $feedLike->removeLike($this);
         }
 
         return $this;

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Exception;
 use DateTimeZone;
+use App\Entity\Post;
 use App\Entity\User;
 use App\Form\CVType;
 use App\Entity\Event;
@@ -13,14 +14,17 @@ use Firebase\JWT\Key;
 use App\Entity\Access;
 use App\Entity\Course;
 use App\Entity\Ticket;
+use App\Form\PostType;
 use App\Entity\Message;
 use App\Entity\Section;
 use App\Form\GroupType;
 use App\Form\LinksType;
 use App\Form\TicketType;
+use App\Entity\FeedEvent;
 use App\Entity\UserGroup;
 use App\Form\MessageType;
 use App\Form\LinkedInType;
+use App\Form\FeedEventType;
 use App\Entity\Notification;
 use App\Form\UserRightsType;
 use App\Entity\InviteToGroup;
@@ -116,15 +120,85 @@ class MainController extends AbstractController
 
         return $this->redirect($request->headers->get('referer'));
     }
-    
+    /**
+     * @Route("/triggerLikeEvent/{id}", name="triggerLikeEvent")
+     */
+    public function triggerLikeEvent(FeedEvent $event, Request $request, EntityManagerInterface $entityManager): JsonResponse
+    {   
+        $userConnected = $this->getUser();
 
+        if(!$userConnected){
+            throw new Exception('Vous devez être connecté pour effectuer cette action');
+        }
+
+        if($event->getLikes()->contains($userConnected)){
+            $event->removeLike($this->getUser());
+            $entityManager->persist($event);
+            $entityManager->flush();
+            $set = true;
+        }else{
+            $event->addLike($this->getUser());
+            $entityManager->persist($event);
+            $entityManager->flush();
+            $set = false;
+        }
+
+        return new JsonResponse(['nbrLikes' => count($event->getLikes()), 'set' => $set]);
+    }  
+    /**
+     * @Route("/removeFeedEvent/{id}", name="removeFeedEvent")
+     */
+    public function removeFeedEvent(FeedEvent $event, Request $request, EntityManagerInterface $entityManager): Response
+    {   
+        if(!$event){
+            throw new Exception('Post introuvable');
+        }
+
+        $entityManager->remove($event);
+        $entityManager->flush();
+
+        $this->addFlash('ui success message', 'Post supprimé');
+
+        return $this->redirect($request->headers->get('referer'));
+    }
     /**
      * @Route("/", name="landingpage")
      */
-    public function index(): Response
+    public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $postForm = $this->createForm(PostType::class);
+        $postForm->handleRequest($request);
+
+        $eventRepository = $this->getDoctrine()->getRepository(FeedEvent::class);
+        $feed = $eventRepository->findAll();
+
+        if ($postForm->isSubmitted() && $postForm->isValid()) {
+
+            $feedEvent = new FeedEvent();
+            $currentDate = new \DateTimeImmutable('now', new DateTimeZone('Europe/Paris'));
+            $feedEvent->setCreatedAt($currentDate);
+            $feedEvent->setCreatedBy($this->getUser());
+
+            $post = new Post();
+            $title = $postForm->get('title')->getData();
+            $content = $postForm->get('content')->getData();
+            $post->setTitle($title);
+            $post->setContent($content);
+            $feedEvent->setPost($post);
+            
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($feedEvent);
+            $entityManager->persist($post);
+            $entityManager->flush();
+
+            $this->addFlash('ui success message', 'Post ajouté');
+            return $this->redirect($request->headers->get('referer'));
+        }
         
-        return $this->render('main/index.html.twig');
+        return $this->render('main/index.html.twig', [
+            'postForm' => $postForm->createView(),
+            'feed' => array_reverse($feed)
+        ]);
     }
     /**
      * @Route("/checkJWT", name="checkJWT")

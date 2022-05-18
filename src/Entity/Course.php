@@ -177,6 +177,11 @@ class Course
      */
     private $targets = [];
 
+    /**
+     * @ORM\ManyToMany(targetEntity=FeedEvent::class, mappedBy="course")
+     */
+    private $feedEvents;
+
 
     public function __construct()
     {
@@ -191,6 +196,7 @@ class Course
         $this->sections = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->courseNaviguations = new ArrayCollection();
+        $this->feedEvents = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -713,6 +719,33 @@ class Course
     public function setTargets(array $targets): self
     {
         $this->targets = $targets;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FeedEvent>
+     */
+    public function getFeedEvents(): Collection
+    {
+        return $this->feedEvents;
+    }
+
+    public function addFeedEvent(FeedEvent $feedEvent): self
+    {
+        if (!$this->feedEvents->contains($feedEvent)) {
+            $this->feedEvents[] = $feedEvent;
+            $feedEvent->addCourse($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFeedEvent(FeedEvent $feedEvent): self
+    {
+        if ($this->feedEvents->removeElement($feedEvent)) {
+            $feedEvent->removeCourse($this);
+        }
 
         return $this;
     }
