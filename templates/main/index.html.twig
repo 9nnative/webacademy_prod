@@ -135,7 +135,7 @@
     </div>
     <div class="content">
       <div class="summary">
-        <a> {{event.createdby.forename}}</a> a publié <a href="/startCourse/{{event.course[0].slug}}">un cours</a> &nbsp;✨
+        <a>{{event.createdby.forename}}</a> a publié <a href="/startCourse/{{event.course[0].slug}}">un cours</a> &nbsp;✨
         <div class="date">
           {{event.createdAt|format_datetime(locale='fr')}}
         </div>
@@ -143,6 +143,9 @@
       <div class="extra text">
         <h5>{{event.course[0].title}}</h5>
         <p>{{event.course[0].description}}</p>
+        <a  href="/startCourse/{{event.course[0].slug}}" target="_blank" data-position="right center" data-tooltip="Cliquez pour voir le cours" class="ui medium rounded image">
+          <img src="/uploads/coursesimages/{{event.course[0].brochurefilename}}"></img>
+        </a>
       </div>
       {% if app.user %}
       <div class="meta forcerow margintop">
@@ -158,13 +161,9 @@
           </p>
           {% endif %}
         </a>
-      <a><i class="comment icon margtiny"></i> 0 Commentaires</a>
+      <a data-tooltip="Commentaires bientôt disponibles" ><i class="comment icon margtiny"></i> 0 Commentaires</a>
       <a href="/removeFeedEvent/{{event.id}}"><i class="ui red trash icon"></i></a>
       <a><i class="ui right edit icon"></i></a>
-      <a href="/startCourse/{{event.course[0].slug}}" target="_blank"  class="ui labeled basic  icon button">
-          <i class="eye icon"></i>
-          Voir le cours
-        </a>
       </div>
       {% endif %}
     </div>

@@ -26,6 +26,7 @@ use AppBundle\Entity\Document;
 use App\Form\CourseSectionType;
 use Doctrine\ORM\EntityManager;
 use App\Entity\CourseNaviguation;
+use App\Entity\FeedEvent;
 use App\Repository\CourseRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -499,7 +500,18 @@ class ELearningController extends AbstractController
 
         $entityManager->persist($course);
         $entityManager->flush($course);
+
+
         $this->addFlash('ui success message sucessFlash', 'Succès - Le cours a correctement été publié !');
+        $date = new \DateTimeImmutable('now', new DateTimeZone('Europe/Paris'));
+
+        $feedEvent = new FeedEvent;
+        $feedEvent->setCreatedAt($date);
+        $feedEvent->addCourse($course);
+        $feedEvent->setCreatedBy($this->getUser());
+        $entityManager->persist($feedEvent);
+        $entityManager->flush($feedEvent);    
+        $this->addFlash('ui success message sucessFlash', 'Votre cours est visible sur le fil d\'actualité');
 
         return $this->redirectToRoute('start_course', ['slug' => $course->getSlug()]);
 

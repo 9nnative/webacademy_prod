@@ -1,77 +1,40 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello Project-Management Controller!{% endblock %}
+{% block title %}Gestion de projets{% endblock %}
+
 
 {% block body %}
-
-<script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@2.23.2/dist/editor.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@editorjs/list@1.7.0/dist/bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@editorjs/header@2.6.2/dist/bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@editorjs/image@2.6.2/dist/bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@editorjs/table@2.0.1/dist/table.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@editorjs/embed@2.5.1/dist/bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@editorjs/quote@2.4.0/dist/bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@editorjs/delimiter@1.2.0/dist/bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@editorjs/marker@1.2.2/dist/bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@editorjs/link@2.4.0/dist/bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@editorjs/inline-code@1.3.1/dist/bundle.min.js"></script>
+<script src="./js/gantt-master/dist/frappe-gantt.min.js"></script>
 
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+<h1>Gestion de projets</h1>
 
-    <div id="editorjs"></div>
-    
-</div>
+<div id="gantt"></div>
 
 <script>
-const ImageTool = window.ImageTool;
-
-const editor = new EditorJS({
-  /**
-   * Id of Element that should contain Editor instance
-   */
-  holder: 'editorjs',
-    
-  placeholder: 'Cliquez ici pour commencer',
-
-  tools: { 
-    header: {
-      class: Header, 
-      inlineToolbar: ['link'] 
-    }, 
-    list: { 
-      class: List, 
-      inlineToolbar: true 
-    },
-    table: {
-      class: Table,
-      inlineToolbar : true
-    },
-    image: {
-      class: ImageTool,
-      inlineToolbar : true,
-        endpoints: {
-          byFile: '/postAcceptor', // Your backend file uploader endpoint
-        },
-    },
-    embed: {
-      class: Embed,
-      inlineToolbar : true
-    },
-    inlinecode: {
-      class: InlineCode,
-      inlineToolbar : true
-    },
-    quote: {
-      class: Quote,
-      inlineToolbar : true
-    },
-    table: {
-      class: Table,
-      inlineToolbar : true
-    },
-  },
+var tasks = [
+  {
+    id: 'Task 1',
+    name: 'Redesign website',
+    start: '2016-12-28',
+    end: '2016-12-31',
+    progress: 20,
+    dependencies: 'Task 2, Task 3',
+    custom_class: 'bar-milestone' // optional
+  }
+]
+var gantt = new Gantt("#gantt", tasks, {
+    header_height: 50,
+    column_width: 30,
+    step: 24,
+    view_modes: ['Quarter Day', 'Half Day', 'Day', 'Week', 'Month'],
+    bar_height: 20,
+    bar_corner_radius: 3,
+    arrow_curve: 5,
+    padding: 18,
+    view_mode: 'Day',
+    date_format: 'YYYY-MM-DD',
+    custom_popup_html: null
 });
 </script>
 {% endblock %}

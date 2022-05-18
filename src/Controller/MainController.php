@@ -53,7 +53,6 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-
 class MainController extends AbstractController
 {
     /**
@@ -164,13 +163,19 @@ class MainController extends AbstractController
     /**
      * @Route("/", name="landingpage")
      */
-    public function index(Request $request, EntityManagerInterface $entityManager): Response
+    public function index(Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
     {
         $postForm = $this->createForm(PostType::class);
         $postForm->handleRequest($request);
 
         $eventRepository = $this->getDoctrine()->getRepository(FeedEvent::class);
-        $feed = $eventRepository->findAll();
+        $feedq = $eventRepository->findAll();
+
+        $feed = $paginator->paginate(
+            $feedq, /* query */
+            $request->query->getInt('page', 1), /*numéro de la page*/
+            50 /*limit par page*/
+        );    
 
         if ($postForm->isSubmitted() && $postForm->isValid()) {
 
@@ -197,7 +202,7 @@ class MainController extends AbstractController
         
         return $this->render('main/index.html.twig', [
             'postForm' => $postForm->createView(),
-            'feed' => array_reverse($feed)
+            'feed' => $feed
         ]);
     }
     /**
