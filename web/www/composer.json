@@ -1,0 +1,6 @@
+{
+    "require": {
+        "symfony/polyfill-intl-messageformatter": "^1.25",
+        "symfony/apache-pack": "^1.0"
+    }
+}

@@ -202,7 +202,7 @@ class MainController extends AbstractController
         
         return $this->render('main/index.html.twig', [
             'postForm' => $postForm->createView(),
-            'feed' => $feed
+            'feed' => array_reverse($feedq),
         ]);
     }
     /**

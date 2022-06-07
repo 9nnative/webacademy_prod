@@ -130,6 +130,12 @@
     "laminas/laminas-code": {
         "version": "4.5.1"
     },
+    "lcobucci/clock": {
+        "version": "2.2.0"
+    },
+    "lcobucci/jwt": {
+        "version": "4.1.5"
+    },
     "league/oauth2-client": {
         "version": "2.6.1"
     },
@@ -282,6 +288,9 @@
             "config/packages/sensio_framework_extra.yaml"
         ]
     },
+    "stella-maris/clock": {
+        "version": "0.1.4"
+    },
     "stof/doctrine-extensions-bundle": {
         "version": "1.7",
         "recipe": {
@@ -296,6 +305,18 @@
     },
     "symfony/amqp-messenger": {
         "version": "v5.3.7"
+    },
+    "symfony/apache-pack": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "1.0",
+            "ref": "9d254a22efca7264203eea98b866f16f944b2f09"
+        },
+        "files": [
+            "webroot/.htaccess"
+        ]
     },
     "symfony/asset": {
         "version": "v5.3.11"
@@ -445,6 +466,21 @@
             "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
         }
     },
+    "symfony/mercure": {
+        "version": "v0.6.1"
+    },
+    "symfony/mercure-bundle": {
+        "version": "0.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "0.3",
+            "ref": "e0a854b5439186e04b28fb8887b42c54f24a0d32"
+        },
+        "files": [
+            "config/packages/mercure.yaml"
+        ]
+    },
     "symfony/messenger": {
         "version": "5.3",
         "recipe": {
@@ -529,6 +565,9 @@
     "symfony/polyfill-intl-idn": {
         "version": "v1.24.0"
     },
+    "symfony/polyfill-intl-messageformatter": {
+        "version": "v1.25.0"
+    },
     "symfony/polyfill-intl-normalizer": {
         "version": "v1.24.0"
     },
@@ -552,6 +591,15 @@
     },
     "symfony/redis-messenger": {
         "version": "v5.3.13"
+    },
+    "symfony/requirements-checker": {
+        "version": "2.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "2.0",
+            "ref": "02c6e4b9b117c39e8a23eab7f3840ef6e62293b9"
+        }
     },
     "symfony/routing": {
         "version": "5.3",

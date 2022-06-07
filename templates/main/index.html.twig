@@ -64,7 +64,8 @@
 
 
 
-  <div class="ui feed raised segment">
+<div class="ui feed raised segment">
+
   <h3>Fil d'actualité</h3>
   {% if is_granted('ROLE_ADMIN') %} 
   <button class="ui button" onclick="openModalPost()"><i class="send icon"></i>Écrire un post
@@ -72,7 +73,7 @@
   {% endif %}
   <div class="ui divider"></div>
 
-<div class="ui feed">
+  <div class="ui feed">
   {% for event in feed %}
 
   {% if event.post %}
@@ -111,7 +112,6 @@
       </div>
       {% endif %}
     </div>
-  </div>
   <script>
   function triggerLikeEvent{{event.id}}(){
     $.get( "/triggerLikeEvent/"+{{event.id}}, function( data ) {

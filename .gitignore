@@ -51,6 +51,4 @@
 # Embedded web-server pid file
 /.web-server-pid
 .env
-.env
-.env
 config/routes/framework.yaml
